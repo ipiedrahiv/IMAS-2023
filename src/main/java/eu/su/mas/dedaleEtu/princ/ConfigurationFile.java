@@ -149,7 +149,7 @@ public final class ConfigurationFile {
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/monoAgent-entities";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/mapInterlocking2-entities";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES=null;
-	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/mapLeon-entities.json";
+	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/fullMapLeon-entities.json";
 
 
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="src/test/java/resources/map2018-agentExplo";

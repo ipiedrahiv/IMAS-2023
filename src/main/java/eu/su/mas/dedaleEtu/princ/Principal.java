@@ -256,6 +256,7 @@ public class Principal {
 			 */
 			c = containerList.get(ConfigurationFile.LOCAL_CONTAINER_NAME);
 			Assert.assertNotNull("This container does not exist",c);
+
 			agentName=ConfigurationFile.DEFAULT_GATEKEEPER_NAME;
 			try {
 				Object[] objtab=new Object[]{ConfigurationFile.ENVIRONMENT_TYPE,ConfigurationFile.GENERATOR_TYPE,ConfigurationFile.INSTANCE_TOPOLOGY,ConfigurationFile.INSTANCE_CONFIGURATION_ELEMENTS,ConfigurationFile.ACTIVE_DIAMOND,ConfigurationFile.ACTIVE_GOLD,ConfigurationFile.ACTIVE_WELL,ConfigurationFile.GENERATOR_PARAMETERS};//used to give informations to the agent
@@ -285,6 +286,36 @@ public class Principal {
 		 * Any agent added here should have its associated configuration available in the entities file 
 		 * 
 		 *****************************************************/
+		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
+		Assert.assertNotNull("This container does not exist", c);
+		Object[] entityParameters = { "My parameters" };
+		agentName = "e1";
+		ag = createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "e2";
+		ag = createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "e3";
+		ag = createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "c1";
+		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "c2";
+		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "c3";
+		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "c4";
+		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "t1";
+		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "t2";
+		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
 		/*********
 		 * User controlled agent (with N(ext) and O(k))
 		 *********/
