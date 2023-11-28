@@ -1,6 +1,5 @@
 package eu.su.mas.dedaleEtu.mas.agents.dummies;
 
-
 import eu.su.mas.dedale.env.Location;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;

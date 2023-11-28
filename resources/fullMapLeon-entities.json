@@ -97,5 +97,49 @@
     "detectionRadius": 0,
     "strengthExpertise": 0,
     "lockPickingExpertise":0
+  },
+  {
+    "agentType":"wumpus",
+    "agentName": "MC",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
+  },
+  {
+    "agentType": "wumpus",
+    "agentName": "MT",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond": -1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise": 1
+  },
+  {
+    "agentType":"wumpus",
+    "agentName": "ME",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
+  },
+  {
+    "agentType":"wumpus",
+    "agentName": "MM",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
   }
 ]

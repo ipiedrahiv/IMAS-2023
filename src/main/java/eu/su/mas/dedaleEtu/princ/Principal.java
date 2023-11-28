@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyCollectorAgent;
+import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyManagerAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyMovingAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyTankerAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.explo.ExploreCoopAgent;
@@ -316,6 +317,19 @@ public class Principal {
 		agentName = "t2";
 		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
 		agentList.add(ag);
+		agentName = "MC";
+		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "MT";
+		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "ME";
+		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "MM";
+		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+
 		/*********
 		 * User controlled agent (with N(ext) and O(k))
 		 *********/
