@@ -1,0 +1,101 @@
+[
+  {
+    "agentType":"agentExplo",
+    "agentName": "e1",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 3,
+    "lockPickingExpertise":2
+  },
+  {
+    "agentType":"agentExplo",
+    "agentName": "e2",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 2,
+    "lockPickingExpertise":3
+  },
+  {
+    "agentType":"agentExplo",
+    "agentName": "e3",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 2,
+    "lockPickingExpertise":3
+  },
+  {
+    "agentType":"agentCollect",
+    "agentName": "c1",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
+  },
+  {
+    "agentType":"agentCollect",
+    "agentName": "c2",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
+  },
+  {
+    "agentType":"agentCollect",
+    "agentName": "c3",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":50,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
+  },
+  {
+    "agentType":"agentCollect",
+    "agentName": "c4",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":50,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
+  },
+  {
+    "agentType":"agentTanker",
+    "agentName": "t1",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold":400,
+    "backPackCapacityDiamond":400,
+    "detectionRadius": 0,
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
+  },
+  {
+    "agentType":"agentTanker",
+    "agentName": "t2",
+    "communicationRange": 100,
+    "initialLocation": "free",
+    "backPackCapacityGold":400,
+    "backPackCapacityDiamond":400,
+    "detectionRadius": 0,
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
+  }
+]
