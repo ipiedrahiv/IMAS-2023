@@ -100,46 +100,46 @@
   },
   {
     "agentType":"wumpus",
-    "agentName": "MC",
+    "agentName": "m1",
     "communicationRange": 100,
     "initialLocation": "free",
-    "backPackCapacityGold": 50,
+    "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
     "detectionRadius": 0,
-    "strengthExpertise": 1,
-    "lockPickingExpertise":1
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
   },
   {
     "agentType": "wumpus",
-    "agentName": "MT",
+    "agentName": "m2",
     "communicationRange": 100,
     "initialLocation": "free",
-    "backPackCapacityGold": 50,
+    "backPackCapacityGold": -1,
     "backPackCapacityDiamond": -1,
     "detectionRadius": 0,
-    "strengthExpertise": 1,
-    "lockPickingExpertise": 1
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
   },
   {
     "agentType":"wumpus",
-    "agentName": "ME",
+    "agentName": "m3",
     "communicationRange": 100,
     "initialLocation": "free",
-    "backPackCapacityGold": 50,
+    "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
     "detectionRadius": 0,
-    "strengthExpertise": 1,
-    "lockPickingExpertise":1
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
   },
   {
     "agentType":"wumpus",
-    "agentName": "MM",
+    "agentName": "m4",
     "communicationRange": 100,
     "initialLocation": "free",
-    "backPackCapacityGold": 50,
+    "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
     "detectionRadius": 0,
-    "strengthExpertise": 1,
-    "lockPickingExpertise":1
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
   }
 ]

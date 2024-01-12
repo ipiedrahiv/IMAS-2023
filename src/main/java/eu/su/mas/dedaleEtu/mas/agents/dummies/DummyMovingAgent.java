@@ -6,7 +6,7 @@ import java.util.List;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
 
-import eu.su.mas.dedaleEtu.mas.behaviours.RandomWalkBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.SayHelloBehaviour;
 
 import jade.core.behaviours.Behaviour;
@@ -14,7 +14,7 @@ import jade.core.behaviours.Behaviour;
 /**
  * This example class start a Dummy agent that will possess two behaviours :
  * <ol>
- * <li> move randomly and test the API methods {@link RandomWalkBehaviour}.
+ * <li> move randomly and test the API methods {@link SemiRandomWalkBehaviour}.
  * <li> send a meaningless message to two other agents {@link SayHelloBehaviour} 
  * </ol>
  * @author hc
@@ -48,7 +48,7 @@ public class DummyMovingAgent extends AbstractDedaleAgent{
 		 * ADD the inititial behaviours of the Dummy Moving Agent here
 		 * 
 		 ************************************************/
-		lb.add(new RandomWalkBehaviour(this));
+		lb.add(new SemiRandomWalkBehaviour(this));
 		lb.add(new SayHelloBehaviour(this));
 		
 		

@@ -18,15 +18,16 @@ import jade.core.behaviours.TickerBehaviour;
  * 
  **************************************/
 
-public class RandomWalkBehaviour extends TickerBehaviour{
+public class SemiRandomWalkBehaviour extends TickerBehaviour{
 	/**
 	 * When an agent choose to move
 	 *
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
+	private Location prevId = null;
 
-	public RandomWalkBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
+	public SemiRandomWalkBehaviour (final AbstractDedaleAgent myagent) {
+		super(myagent, 500);
 		//super(myagent);
 	}
 
@@ -37,11 +38,15 @@ public class RandomWalkBehaviour extends TickerBehaviour{
 
 		if (myPosition!=null && myPosition.getLocationId()!=""){
 			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+			// System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 			//Random move from the current position
-			Random r= new Random();
-			int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+			int moveId;
+				do{
+				Random r= new Random();
+				moveId = 1 + r.nextInt(lobs.size()-1);
+			}while(lobs.get(moveId).getLeft() == prevId && prevId != null);
+			prevId = myPosition;
 
 			//The move action (if any) should be the last action of your behaviour
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());

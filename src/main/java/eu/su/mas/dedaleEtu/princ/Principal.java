@@ -317,16 +317,16 @@ public class Principal {
 		agentName = "t2";
 		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
 		agentList.add(ag);
-		agentName = "MC";
+		agentName = "m1";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
-		agentName = "MT";
+		agentName = "m2";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
-		agentName = "ME";
+		agentName = "m3";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
-		agentName = "MM";
+		agentName = "m4";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
 

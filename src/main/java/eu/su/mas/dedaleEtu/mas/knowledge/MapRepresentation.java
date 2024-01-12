@@ -47,6 +47,9 @@ public class MapRepresentation implements Serializable {
 
 	private static final long serialVersionUID = -1333959882640838272L;
 
+	// Singleton instance
+	private static MapRepresentation instance;
+
 	/*********************************
 	 * Parameters for graph rendering
 	 ********************************/
@@ -62,8 +65,18 @@ public class MapRepresentation implements Serializable {
 
 	private SerializableSimpleGraph<String, MapAttribute> sg;//used as a temporary dataStructure during migration
 
+	public static MapRepresentation getInstance() {
+		if (instance == null) {
+			synchronized (MapRepresentation.class) {
+				if (instance == null) {
+					instance = new MapRepresentation();
+				}
+			}
+		}
+		return instance;
+	}
 
-	public MapRepresentation() {
+	private MapRepresentation() {
 		//System.setProperty("org.graphstream.ui.renderer","org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		System.setProperty("org.graphstream.ui", "javafx");
 		this.g= new SingleGraph("My world vision");

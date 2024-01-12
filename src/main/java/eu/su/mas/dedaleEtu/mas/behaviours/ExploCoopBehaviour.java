@@ -73,7 +73,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	public void action() {
 
 		if(this.myMap==null) {
-			this.myMap= new MapRepresentation();
+			this.myMap= MapRepresentation.getInstance();
 			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent,500,this.myMap,list_agentNames));
 		}
 
@@ -110,10 +110,16 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			}
 
 			//3) while openNodes is not empty, continues.
-			if (!this.myMap.hasOpenNode()){
+			if (!this.myMap.hasOpenNode() || finished){
 				//Explo finished
 				finished=true;
-				System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
+				System.out.println("***************\n" +
+								"******************\n" +
+								"******************\n" +
+								"******************\n" +
+								"******************\n" +
+								"******************\n" + this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
+				moveRandom();
 			}else{
 				//4) select next move.
 				//4.1 If there exist one open node directly reachable, go for it,
@@ -126,27 +132,26 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}else {
 					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 				}
-				
-				//5) At each time step, the agent check if he received a graph from a teammate. 	
-				// If it was written properly, this sharing action should be in a dedicated behaviour set.
-				MessageTemplate msgTemplate=MessageTemplate.and(
-						MessageTemplate.MatchProtocol("SHARE-TOPO"),
-						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-				ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-				if (msgReceived!=null) {
-					SerializableSimpleGraph<String, MapAttribute> sgreceived=null;
-					try {
-						sgreceived = (SerializableSimpleGraph<String, MapAttribute>)msgReceived.getContentObject();
-					} catch (UnreadableException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					this.myMap.mergeMap(sgreceived);
-				}
 
 				((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId));
 			}
 
+		}
+	}
+
+	private void moveRandom() {
+		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+
+		if (myPosition!=null && myPosition.getLocationId()!=""){
+			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+
+			//Random move from the current position
+			Random r= new Random();
+			int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+
+			//The move action (if any) should be the last action of your behaviour
+			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 		}
 	}
 

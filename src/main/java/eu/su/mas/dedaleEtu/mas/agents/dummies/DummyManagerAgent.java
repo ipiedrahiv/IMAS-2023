@@ -5,10 +5,9 @@ import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
-
-import eu.su.mas.dedaleEtu.mas.behaviours.RandomWalkBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.SayHelloBehaviour;
-
+import eu.su.mas.dedaleEtu.mas.behaviours.ManagerBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.behaviours.Behaviour;
 
 
@@ -25,6 +24,7 @@ import jade.core.behaviours.Behaviour;
 public class DummyManagerAgent extends AbstractDedaleAgent{
 
 	private static final long serialVersionUID = -2991562876411096907L;
+	private MapRepresentation myMap;
 	
 
 	/**
@@ -50,7 +50,8 @@ public class DummyManagerAgent extends AbstractDedaleAgent{
 		 * ADD the inititial behaviours of the Dummy Moving Agent here
 		 * 
 		 ************************************************/
-		lb.add(new RandomWalkBehaviour(this));
+		lb.add(new ManagerBehaviour(this, myMap));
+		lb.add(new SemiRandomWalkBehaviour(this));
 		
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
