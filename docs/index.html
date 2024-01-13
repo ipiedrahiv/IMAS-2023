@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="dist/reset.css">
   <link rel="stylesheet" href="dist/reveal.css">
   <link rel="stylesheet" href="dist/theme/solarized.css">
+  <link rel="stylesheet" href="css/custom.css">
 
   <!-- Theme used for syntax highlighted code -->
   <link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -17,108 +18,12 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 </head>
-<style>
-  .fragment.blur {
-    filter: blur(5px);
-  }
-
-  .fragment.blur.visible {
-    filter: none;
-  }
-
-  .items {
-    font-size: 20px;
-  }
-
-  .content {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .bullets1 {
-    flex: 1;
-    padding-right: 20px;
-    /* Adjust the spacing between bullets and image as needed */
-  }
-
-  .image1 {
-    flex: 1;
-    text-align: right;
-  }
-
-  .bullets2 {
-    flex: 1;
-    padding-right: 20px;
-    /* Adjust the spacing between bullets and image as needed */
-  }
-
-  .image2 {
-    flex: 1;
-    text-align: left;
-  }
-
-  .left {
-    float: left;
-    width: 50%;
-    /* Adjust width as needed */
-  }
-
-  .right {
-    float: right;
-    width: 50%;
-    /* Adjust width as needed */
-  }
-
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  table {
-    /* Adjust table width as needed */
-    border-collapse: collapse;
-    font-size: 20px;
-  }
-
-  th,
-  td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-    vertical-align: middle;
-
-  }
-
-
-  th.column1 {
-    width: 20%;
-    /* Set the width of the first column */
-  }
-
-  th.column2 {
-    width: 30%;
-    /* Set the width of the second column */
-  }
-
-  /* Apply the same widths to corresponding table data cells */
-  td.column1,
-  th.column1 {
-    width: 20%;
-  }
-
-  td.column2,
-  th.column2 {
-    width: 30%;
-  }
-</style>
 
 <body>
   <div class="reveal">
     <div class="slides">
-      <!-- Cover -->
-      <section>
+      <!-- ------------- Cover ------------------ -->
+      <section data-transition="zoom">
         <h1 class="fragment" style="color: #79b6c9;">TREASURE HUNT PROBLEM</h1>
         <h3 class="fragment">Introduction to Multi-Agent Systems</h3>
         <h4 class="fragment">Master in Artificial Intelligence</h4>
@@ -126,10 +31,10 @@
           Alam López</p>
       </section>
 
-      <!-- Slide 1 -->
+      <!-- ------------- Slide 1 ------------------ -->
       <section>
         <div class="content">
-          <div class="bullets1">
+          <div class="left">
             <h2>Problem description</h2>
             <ul>
               <li class="fragment fade-up items" align="justify">Implementation of a treasure hunt simulation with the
@@ -142,21 +47,20 @@
                 completion.</li>
             </ul>
           </div>
-          <div class="image1">
+          <div class="right">
             <img src="./assets/gsHunt.png" alt="Italian Trulli">
-            <!-- <p>Source: Dedale project (https://dedale.gitlab.io/page/dedale/presentation/)</p> -->
           </div>
         </div>
       </section>
 
-      <!-- Slide 2 -->
+      <!-- ------------- Slide 2 ------------------ -->
       <section>
         <div class="content">
-          <div class="image2">
+          <div class="left">
             <img src="./assets/maps.png" alt="Italian Trulli">
             <!-- <p>Source: Dedale project (https://dedale.gitlab.io/page/dedale/presentation/)</p> -->
           </div>
-          <div class="bullets2">
+          <div class="right">
             <h2>General Analysis</h2>
             <ul>
               <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Environment
@@ -192,13 +96,13 @@
         </div>
       </section>
 
-      <!-- Slide 3 -->
+      <!-- ------------- Slide 3 ------------------ -->
       <section>
         <div class="content">
-          <div class="bullets1">
+          <div class="left">
             <h2 style="font-size: 60px;">General System Architecture</h2>
           </div>
-          <div class="image1">
+          <div class="right">
             <ul>
               <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Architecture
                 Characteristics</li>
@@ -215,11 +119,11 @@
         <img src="./assets/architecture.png" alt="Italian Trulli" style="width: 700px;">
       </section>
 
-      <!-- Slide 4 -->
+      <!-- ------------- Slide 4 ------------------ -->
       <section>
         <h2>Problem Decomposition</h2>
         <div class="content">
-          <div class="bullets1">
+          <div class="left">
             <ul>
               <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Map Exploration</li>
               <img class="fragment custom blur" src="./assets/mapExploration.png" alt="Italian Trulli"
@@ -229,7 +133,7 @@
               <img class="fragment custom blur" src="./assets/deadlock.png" alt="Italian Trulli" style="width: 450px;">
             </ul>
           </div>
-          <div class="image1">
+          <div class="right">
             <ul>
               <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Treasure collection
               </li>
@@ -240,86 +144,84 @@
               <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Basic Behaviours and
                 Dynamic Task Allocation</li>
               <img class="fragment custom blur" src="./assets/communication.png" alt="Italian Trulli"
-                style="width: 200px;">
+                style="width: 200px; text-align: center;">
             </ul>
           </div>
         </div>
-        <!-- <img src="./assets/architecture.png" alt="Italian Trulli" style="width: 700px;"> -->
       </section>
 
       <section>
-        <!-- Slide 5 -->
-      <section>
-        <div class="content">
-          <div class="bullets1">
-            <h2>Task Sharing</h2> <br>
-            <img class="fragment fade-up" src="./assets/ContractN.png" alt="Italian Trulli" style="width: 400px;">
+        <!-- ------------- Slide 5 ------------------ -->
+        <section>
+          <div class="content">
+            <div class="left">
+              <h2>Task Sharing</h2> <br>
+              <img class="fragment fade-up" src="./assets/ContractN.png" alt="Italian Trulli" style="width: 400px;">
+            </div>
+            <div class="right fragment">
+              <h4 style="color: #5697ac;">Contract Net</h4>
+              <a style="font-size: 20px;">Managers - Coordinators</a> <br>
+              <a style="font-size: 20px;">Contractors - Low-level agents</a> <br>
+              <!-- Table starts here -->
+              <table
+                style="width:135%; max-width: 135%; table-layout: fixed; border: 1px solid black; border-collapse: collapse;">
+                <tr>
+                  <th style="border: 1px solid black; width: 25%;">Contract</th>
+                  <th style="border: 1px solid black; width: 25%;">Contractors</th>
+                  <th style="border: 1px solid black;">Cost function</th>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid black; word-wrap: break-word;">Safe opening</td>
+                  <td style="border: 1px solid black;"><img src="assets/exp_col.png" alt="Contractor 1"
+                      style="width:100%; max-width:100px; max-height:100px;" /></td>
+                  <td style="border: 1px solid black;">
+                    <div style="font-size: smaller;">
+                      \(C = d + \alpha\left(lp_{a} - lp\right) + \beta\left(s_{a}-s\right)\)
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid black; word-wrap: break-word;">Treasure collection</td>
+                  <td style="border: 1px solid black;"><img src="assets/col_tank.png" alt="Contractor 2"
+                      style="width:100%; max-width:100px; max-height:100px;" /></td>
+                  <td style="border: 1px solid black;">
+                    <div style="overflow-x:auto; font-size: smaller;">
+                      \(C = d\)
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <!-- Table ends here -->
+            </div>
           </div>
-          <div class="fragment right">
-            <h4 style="color: #5697ac;">Contract Net</h4>
-            <a style="font-size: 20px;">Managers - Coordinators</a> <br>
-            <a style="font-size: 20px;">Contractors - Low-level agents</a> <br>
-            <!-- Table starts here -->
-            <table
-              style="width:135%; max-width: 135%; table-layout: fixed; border: 1px solid black; border-collapse: collapse;">
-              <tr>
-                <th style="border: 1px solid black; width: 25%;">Contract</th>
-                <th style="border: 1px solid black; width: 25%;">Contractors</th>
-                <th style="border: 1px solid black;">Cost function</th>
-              </tr>
-              <tr>
-                <td style="border: 1px solid black; word-wrap: break-word;">Safe opening</td>
-                <td style="border: 1px solid black;"><img src="assets/exp_col.png" alt="Contractor 1"
-                    style="width:100%; max-width:100px; max-height:100px;" /></td>
-                <td style="border: 1px solid black;">
-                  <div style="font-size: smaller;">
-                    \(C = d + \alpha\left(lp_{a} - lp\right) + \beta\left(s_{a}-s\right)\)
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid black; word-wrap: break-word;">Treasure collection</td>
-                <td style="border: 1px solid black;"><img src="assets/col_tank.png" alt="Contractor 2"
-                    style="width:100%; max-width:100px; max-height:100px;" /></td>
-                <td style="border: 1px solid black;">
-                  <div style="overflow-x:auto; font-size: smaller;">
-                    \(C = d\)
-                  </div>
-                </td>
-              </tr>
-            </table>
-            <!-- Table ends here -->
+        </section>
+
+        <!-- ------------- Slide 6 ------------------ -->
+        <section>
+          <div class="content">
+            <div class="left">
+              <br>
+              <h2>Task Sharing</h2>
+              <h3 style="color: #5697ac;">Broadcasting contracts</h3>
+            </div>
+            <div class="right fragment" style="width: 100%;">
+              <img class="fragment" src="./assets/coordination.png" alt="Italian Trulli" style="width: 500%;">
+              <!-- Table ends here -->
+            </div>
           </div>
-        </div>
+        </section>
       </section>
 
-      <!-- Slide 6 -->
+      <section>
+      <!-- ------------- Slide 7 ------------------ -->
       <section>
         <div class="content">
-          <div class="bullets1">
-            <br>
-            <h2>Task Sharing</h2>
-            <h3 style="color: #5697ac;">Broadcasting contracts</h3>
-          </div>
-          <div class="fragment right" style="width: 100%;">
-            <img class="fragment" src="./assets/coordination.png" alt="Italian Trulli" style="width: 500%;">
-            <!-- Table ends here -->
-          </div>
-        </div>
-      </section>
-      </section>
-
-      <section>
-        <!-- Slide 7 -->
-      <section>
-        <div class="content">
-          <div class="image2">
+          <div class="right">
             <h2>Results Sharing</h2>
             <h3 style="color: #5697ac; font-size: 40px;">Blackboard</h3>
             <img src="./assets/blackboard.png" alt="Italian Trulli">
-            <!-- <p>Source: Dedale project (https://dedale.gitlab.io/page/dedale/presentation/)</p> -->
           </div>
-          <div class="bullets2">
+          <div class="left">
             <br><br><br>
             <ul>
               <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress og
@@ -341,11 +243,11 @@
         </div>
       </section>
 
-      <!-- Slide 8 -->
+      <!-- ------------- Slide 8 ------------------ -->
       <section>
         <h2>Results Sharing</h2>
         <div class="content">
-          <div class="image2">
+          <div class="left">
             <h3 style="color: #5697ac; font-size: 40px;">Publish/Subscribe</h3>
             <ul>
               <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Events:</li>
@@ -370,7 +272,7 @@
               </div>
             </ul>
           </div>
-          <div class="bullets2">
+          <div class="right">
             <br>
             <img src="./assets/subscribe.png" alt="Italian Trulli">
           </div>
@@ -379,13 +281,11 @@
       </section>
 
 
-      <!-- Slide 9 -->
-
-
+      <!-- ------------- Slide 8 ------------------ -->
       <section>
         <h2>Social Norms</h2>
         <div class="content">
-          <div class="fragment custom blur column"
+          <div class="column fragment custom blur"
             style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
             <div class="latex" style="text-align: center;">
               <div style="font-size: 15px;">
@@ -400,13 +300,13 @@
                 <img src="./assets/SN1.png" alt="Italian Trulli">
               </div>
             </div>
-            <div class="fragment custom blur column"
+            <div class="column fragment custom blur"
               style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
               <div class="image">
                 <img src="./assets/SN_tankers.png" alt="Italian Trulli">
               </div>
             </div>
-            <div class="fragment custom blur column"
+            <div class="column fragment custom blur"
               style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
               <div class="image">
                 <img src="./assets/SN3.png" alt="Italian Trulli">
@@ -415,8 +315,8 @@
           </div>
       </section>
 
-<!-- Cover -->
-      <section>
+      <!-- ------------- Closing Slide ------------------ -->
+      <section data-transition="zoom">
         <h1 style="color: #79b6c9;">TREASURE HUNT PROBLEM</h1>
         <h3>Introduction to Multi-Agent Systems</h3>
         <h4>Master in Artificial Intelligence</h4>
