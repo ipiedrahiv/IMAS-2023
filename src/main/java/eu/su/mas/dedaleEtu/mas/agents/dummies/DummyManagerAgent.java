@@ -1,14 +1,20 @@
 package eu.su.mas.dedaleEtu.mas.agents.dummies;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
 import eu.su.mas.dedaleEtu.mas.behaviours.ManagerBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.MessageManagingBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.protocols.DedaleContractNetInitiator;
+import jade.core.AID;
 import jade.core.behaviours.Behaviour;
+import jade.domain.FIPANames;
+import jade.lang.acl.ACLMessage;
 
 
 /**
@@ -52,13 +58,13 @@ public class DummyManagerAgent extends AbstractDedaleAgent{
 		 ************************************************/
 		lb.add(new ManagerBehaviour(this, myMap));
 		lb.add(new SemiRandomWalkBehaviour(this));
+		lb.add(new MessageManagingBehaviour(this, this.myMap));
 		
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
 		 */
 		
 		addBehaviour(new startMyBehaviours(this,lb));
-
 	}
 
 

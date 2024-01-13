@@ -47,13 +47,9 @@ public class MapRepresentation implements Serializable {
 
 	}
 
-	public enum State {
-		locked, unlocked;
-	}
-
 	private static final long serialVersionUID = -1333959882640838272L;
-	private List<Couple<String, State>> goldTreasures = new ArrayList<Couple<String, State>>();
-	private List<Couple<String, State>> diamondTreasures = new ArrayList<Couple<String, State>>();
+		
+	private List<Treasure> treasures = new ArrayList<Treasure>();
 
 	// Singleton instance
 	private static MapRepresentation instance;
@@ -98,75 +94,62 @@ public class MapRepresentation implements Serializable {
 		this.nbEdges=0;
 	}
 
-	private synchronized boolean treasureContained(List<Couple<String, State>> list, String id) {
-		for (Couple<String, State> t : list) {
-			if (t.getLeft().equals(id)) {
+	private synchronized boolean treasureContained(List<Treasure> list, String id) {
+		for (Treasure t : list) {
+			if (t.getId().equals(id)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public synchronized boolean addTreasure(String id, Observation type) {
-		if (type == Observation.GOLD) {
-			if (!treasureContained(this.goldTreasures, id)) {
-				this.goldTreasures.add(new Couple<String, State>(id, State.locked));
+	public synchronized boolean addTreasure(String id, int amount, Observation type) {
+		if (!treasureContained(this.treasures, id)) {
+			this.treasures.add(new Treasure(id, amount, State.LOCKED, type));
+			return true;
+		}
+		return false;
+	}
+
+	public synchronized boolean unlockTreasure(String id) {
+		for (Treasure t : this.treasures) {
+			if (t.getId().equals(id)) {
+				t.setState(State.UNLOCKED);
 				return true;
 			}
-		} else if (type == Observation.DIAMOND) {
-			if (!treasureContained(this.diamondTreasures, id)) {
-				this.diamondTreasures.add(new Couple<String, State>(id, State.locked));
-				return true;
+		}
+		return false;
+	}
+
+	public synchronized boolean checkUnlocked(String id) {
+		for (Treasure t : this.treasures) {
+			if (t.getId().equals(id)) {
+				return t.getState() == State.UNLOCKED;
 			}
 		}
 		return false;
 	}
 
-	public synchronized boolean unlockTreasure(Observation type, String id) {
-		if (type == Observation.GOLD) {
-			for (Couple<String, State> t : this.goldTreasures) {
-				if (t.getLeft().equals(id)) {
-					t = new Couple<String, State>(id, State.unlocked);
-					return true;
-				}
-			}
-		} else if (type == Observation.DIAMOND) {
-			for (Couple<String, State> t : this.diamondTreasures) {
-				if (t.getLeft().equals(id)) {
-					t = new Couple<String, State>(id, State.unlocked);
-					return true;
-				}
+	public synchronized void updateTreasure(String id) {
+		for (Treasure t : this.treasures) {
+			if (t.getId().equals(id)) {
+				t.setState(State.COLLECTED);
 			}
 		}
-		return false;
 	}
 
-	public synchronized boolean checkUnlocked(Observation type, String id) {
-		if (type == Observation.GOLD) {
-			for (Couple<String, State> t : this.goldTreasures) {
-				if (t.getLeft().equals(id)) {
-					return t.getRight() == State.unlocked;
-				}
-			}
-		} else if (type == Observation.DIAMOND) {
-			for (Couple<String, State> t : this.diamondTreasures) {
-				if (t.getLeft().equals(id)) {
-					return t.getRight() == State.unlocked;
-				}
+	public List<Treasure> getUnlockedTreasures() {
+		List<Treasure> unlockedTreasures = new ArrayList<Treasure>();
+		for (Treasure t : this.treasures) {
+			if (t.getState() == State.UNLOCKED) {
+				unlockedTreasures.add(t);
 			}
 		}
-		return false;
+		return unlockedTreasures;
 	}
 
-	public synchronized List<Couple<String, State>> getTreasures(Observation type) {
-		if (type == Observation.GOLD) {
-			return goldTreasures;
-			
-		} else if (type == Observation.DIAMOND) {
-			return diamondTreasures;
-		}else {
-			return null;
-		}
+	public synchronized List<Treasure> getTreasures() {
+		return treasures;
 	}
 
 	/**
@@ -232,6 +215,8 @@ public class MapRepresentation implements Serializable {
 
 		Dijkstra dijkstra = new Dijkstra();//number of edge
 		dijkstra.init(g);
+		System.out.println(idFrom);
+		System.out.println(g.getNode(idFrom));
 		dijkstra.setSource(g.getNode(idFrom));
 		dijkstra.compute();//compute the distance to all nodes from idFrom
 		List<Node> path=dijkstra.getPath(g.getNode(idTo)).getNodePath(); //the shortest path from idFrom to idTo

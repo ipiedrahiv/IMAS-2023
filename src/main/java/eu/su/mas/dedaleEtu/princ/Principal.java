@@ -323,18 +323,18 @@ public class Principal {
 		agentName = "m1";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
-		agentName = "m2";
-		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
-		agentList.add(ag);
-		agentName = "m3";
-		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
-		agentList.add(ag);
-		agentName = "m4";
-		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
-		agentList.add(ag);
-		agentName = "m5";
-		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
-		agentList.add(ag);
+		// agentName = "m2";
+		// ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		// agentList.add(ag);
+		// agentName = "m3";
+		// ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		// agentList.add(ag);
+		// agentName = "m4";
+		// ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		// agentList.add(ag);
+		// agentName = "m5";
+		// ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		// agentList.add(ag);
 
 		/*********
 		 * User controlled agent (with N(ext) and O(k))

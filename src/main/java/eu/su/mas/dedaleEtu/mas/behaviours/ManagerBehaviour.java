@@ -1,14 +1,18 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import eu.su.mas.dedale.env.Location;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
+import eu.su.mas.dedaleEtu.mas.protocols.DedaleContractNetInitiator;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 
 /**
@@ -40,30 +44,25 @@ public class ManagerBehaviour extends TickerBehaviour{
 			this.myMap= MapRepresentation.getInstance();
 		}
 
-		if(!this.myMap.hasOpenNode()) {
-			
+		List<Treasure> unlockedTreasures = this.myMap.getUnlockedTreasures();
+
+		for (Treasure treasure : unlockedTreasures) {
+			if (!unlockedTreasures.isEmpty()) {
+				String[] responders = {"c1", "c2", "c3", "c4"};
+				
+				// Fill the CFP message
+				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+				for (int i = 0; i < responders.length; ++i) {
+					cfp.addReceiver(new AID(responders[i], AID.ISLOCALNAME));
+				}
+				cfp.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+				cfp.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
+				cfp.setContent(treasure.toString());
+				
+				this.myAgent.addBehaviour(new DedaleContractNetInitiator(this.myAgent, cfp));
+			}
+			break;
 		}
 
-		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
-		//A message is defined by : a performative, a sender, a set of receivers, (a protocol),(a content (and/or contentOBject))
-		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
-		
-		msg.setSender(this.myAgent.getAID());
-		msg.setProtocol("UselessProtocol");
-
-		if (myPosition!=null && myPosition.getLocationId()!=""){
-			//System.out.println("Agent "+this.myAgent.getLocalName()+ " is trying to reach its friends");
-			msg.setContent("Hello World, I'm at "+myPosition);
-
-			msg.addReceiver(new AID("Collect1",AID.ISLOCALNAME));
-			msg.addReceiver(new AID("Collect2",AID.ISLOCALNAME));
-			
-
-			//Mandatory to use this method (it takes into account the environment to decide if someone is reachable or not)
-			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-		}
 	}
-
-
 }
