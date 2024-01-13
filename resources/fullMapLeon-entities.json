@@ -1,8 +1,8 @@
 [
   {
     "agentType":"agentExplo",
-    "agentName": "e1",
-    "communicationRange": 50,
+    "agentName": "Explorer 1",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -12,8 +12,8 @@
   },
   {
     "agentType":"agentExplo",
-    "agentName": "e2",
-    "communicationRange": 50,
+    "agentName": "Explorer 2",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -23,8 +23,8 @@
   },
   {
     "agentType":"agentExplo",
-    "agentName": "e3",
-    "communicationRange": 50,
+    "agentName": "Explorer 3",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -34,8 +34,8 @@
   },
   {
     "agentType":"agentCollect",
-    "agentName": "c1",
-    "communicationRange": 50,
+    "agentName": "Collector 1",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": 50,
     "backPackCapacityDiamond":-1,
@@ -45,8 +45,8 @@
   },
   {
     "agentType":"agentCollect",
-    "agentName": "c2",
-    "communicationRange": 50,
+    "agentName": "Collector 2",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": 50,
     "backPackCapacityDiamond":-1,
@@ -56,8 +56,8 @@
   },
   {
     "agentType":"agentCollect",
-    "agentName": "c3",
-    "communicationRange": 50,
+    "agentName": "Collector 3",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":50,
@@ -67,8 +67,8 @@
   },
   {
     "agentType":"agentCollect",
-    "agentName": "c4",
-    "communicationRange": 50,
+    "agentName": "Collector 4",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":50,
@@ -78,8 +78,8 @@
   },
   {
     "agentType":"agentTanker",
-    "agentName": "t1",
-    "communicationRange": 50,
+    "agentName": "Tanker 1",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold":400,
     "backPackCapacityDiamond":400,
@@ -89,8 +89,8 @@
   },
   {
     "agentType":"agentTanker",
-    "agentName": "t2",
-    "communicationRange": 50,
+    "agentName": "Tanker 2",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold":400,
     "backPackCapacityDiamond":400,
@@ -100,8 +100,8 @@
   },
   {
     "agentType":"wumpus",
-    "agentName": "m1",
-    "communicationRange": 50,
+    "agentName": "Manager 1",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -111,8 +111,8 @@
   },
   {
     "agentType": "wumpus",
-    "agentName": "m2",
-    "communicationRange": 50,
+    "agentName": "Manager 2",
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond": -1,
@@ -123,7 +123,7 @@
   {
     "agentType":"wumpus",
     "agentName": "m3",
-    "communicationRange": 50,
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -134,7 +134,7 @@
   {
     "agentType":"wumpus",
     "agentName": "m4",
-    "communicationRange": 50,
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -145,7 +145,7 @@
   {
     "agentType":"wumpus",
     "agentName": "m5",
-    "communicationRange": 50,
+    "communicationRange": 30,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,

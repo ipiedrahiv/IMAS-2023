@@ -149,11 +149,16 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			}else {
 				if(!moveTowardsTreasure(myPosition)) {
 					moveRandom(myPosition);
-				}else{
-					unlockTreasure(myPosition, lobs);
 				}
+				unlockTreasure(myPosition, lobs);
+			}
+			if(prevLoc == myPosition) {
+				System.out.println(this.myAgent.getLocalName()+" - Stuck at "+myPosition.getLocationId()+", moving randomly");
+				count += 3;
+				moveRandom(myPosition);
 			}
 			count -= 1;
+			prevLoc = myPosition;
 		}
 	}
 
@@ -216,7 +221,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				Random r= new Random();
 				moveId = 1 + r.nextInt(lobs.size()-1);
 			}while(lobs.get(moveId).getLeft() == prevLoc && prevLoc != null);
-			prevLoc = myPosition;
 
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 		}

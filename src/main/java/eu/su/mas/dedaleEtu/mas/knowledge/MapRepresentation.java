@@ -215,7 +215,7 @@ public class MapRepresentation implements Serializable {
 
 		Dijkstra dijkstra = new Dijkstra();//number of edge
 		dijkstra.init(g);
-		if(g.getNode(idFrom)==null) {
+		if(g.getNode(idFrom)==null || g.getNode(idTo)==null) {
 			return null;
 		}
 		dijkstra.setSource(g.getNode(idFrom));

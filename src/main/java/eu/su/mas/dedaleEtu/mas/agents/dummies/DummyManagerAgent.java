@@ -67,30 +67,5 @@ public class DummyManagerAgent extends AbstractDedaleAgent{
 		addBehaviour(new startMyBehaviours(this,lb));
 	}
 
-
-	/**
-	 * This method is automatically called after doDelete()
-	 */
-	protected void takeDown(){
-		super.takeDown();
-	}
-	
-	/**
-	 * This method is automatically called before migration. 
-	 * You can add here all the saving you need
-	 */
-	protected void beforeMove(){
-		super.beforeMove();
-	}
-	
-	/**
-	 * This method is automatically called after migration to reload. 
-	 * You can add here all the info regarding the state you want your agent to restart from 
-	 * 
-	 */
-	protected void afterMove(){
-		super.afterMove();
-	}
-
 }
 

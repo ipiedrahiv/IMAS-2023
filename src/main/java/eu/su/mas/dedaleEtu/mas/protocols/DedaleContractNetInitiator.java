@@ -186,7 +186,7 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
     }
 
     protected void handleInform(ACLMessage inform) {
-        System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
+        System.out.println("Agent "+inform.getSender().getLocalName()+" successfully performed the requested action");
         Treasure t = new Treasure(inform.getContent());
         for (Treasure treasure : this.myMap.getTreasures()) {
             if (treasure.getId().equals(t.getId())) {
@@ -197,9 +197,9 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
     }
 
     protected void handleAllResponses(Vector<ACLMessage> responses, Vector<ACLMessage> acceptances) {
-        if (responses.size() < 4) {
+        if (responses.size() < 2) {
             // Some responder didn't reply within the specified timeout
-            System.out.println("Timeout expired: missing "+(4 - responses.size())+" responses");
+            System.out.println("Timeout expired: missing "+(2 - responses.size())+" responses");
         }
         // Evaluate proposals.
         // Each proposal is the length of the shortest path from the collector to the treasure
@@ -223,9 +223,9 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
         }
         
         if (accept != null) {
-            System.out.println("Accepting proposal "+bestProposal+" from responder "+bestProposer.getName());
+            System.out.println("Accepting proposal "+bestProposal+" from responder "+bestProposer.getLocalName());
             accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-        }						
+        }
     }
 
     protected void handleAllResultNotifications(Vector<? extends ACLMessage> ignoredResultNotifications) {
