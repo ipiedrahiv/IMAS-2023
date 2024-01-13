@@ -75,8 +75,20 @@ public class MessageManagingBehaviour extends TickerBehaviour{
                 }else {
                     ((AbstractDedaleAgent)this.myAgent).sendMessage(null);
                 }
+            }else if(msg.getProtocol().equals("HelpCollector")) {
+                //Retrieve id from content and send message to a tanker to go to the collector
+                String agentId = msg.getContent();
+                ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
+                reply.setSender(this.myAgent.getAID());
+                reply.setProtocol("MoveTanker");
+                reply.setContent(agentId);
+                
+                reply.addReceiver(new AID("Tanker 1", AID.ISLOCALNAME));
+                reply.addReceiver(new AID("Tanker 2", AID.ISLOCALNAME));
+
+                ((AbstractDedaleAgent)this.myAgent).sendMessage(reply);
+                
             }
         }
-    
     }
 }

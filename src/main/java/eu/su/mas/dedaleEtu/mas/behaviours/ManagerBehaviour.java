@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.su.mas.dedale.env.Location;
+import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.knowledge.State;
@@ -46,31 +47,46 @@ public class ManagerBehaviour extends TickerBehaviour{
 		}
 
 		List<Treasure> unlockedTreasures = this.myMap.getUnlockedTreasures();
+		boolean gold = false;
+		boolean diamond = false;
+		boolean proceed = true;
 
-		for (Treasure treasure : unlockedTreasures) {
-			if (!unlockedTreasures.isEmpty()) {
+		if (!unlockedTreasures.isEmpty()) {
+			for (Treasure treasure : unlockedTreasures) {
 				treasure.setState(State.COVERED);
-				String[] responders = {"c1", "c2", "c3", "c4"};
-				
-				// Fill the CFP message
-				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
-				for (int i = 0; i < responders.length; ++i) {
-					cfp.addReceiver(new AID(responders[i], AID.ISLOCALNAME));
+				if(treasure.getType() == Observation.GOLD && gold) {
+					proceed = false;
+				}else if(treasure.getType() == Observation.DIAMOND && diamond) {
+					proceed = false;
 				}
-				cfp.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-				cfp.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-				cfp.setContent(treasure.toString());
+
+				if(proceed) {
+					String[] responders;
+					if (treasure.getType() == Observation.GOLD) {
+						responders = new String[]{"Collector 1", "Collector 2"};
+						gold = true;
+					} else {
+						responders = new String[]{"Collector 3", "Collector 4"};
+						diamond = true;
+					}
 				
-				this.myAgent.addBehaviour(new DedaleContractNetInitiator(this.myAgent, cfp, this.myMap));
-				treasure.setState(State.COVERED);
+					// Fill the CFP message
+					ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+					for (int i = 0; i < responders.length; ++i) {
+						cfp.addReceiver(new AID(responders[i], AID.ISLOCALNAME));
+					}
+					cfp.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+					cfp.setReplyByDate(new Date(System.currentTimeMillis() + 8000));
+					cfp.setContent(treasure.toString());
+
+					this.myAgent.addBehaviour(new DedaleContractNetInitiator(this.myAgent, cfp, this.myMap));
+				}
+				if(treasure.getState() == State.COVERED) {
+					treasure.setState(State.UNLOCKED);
+				}
+				proceed = true;
 			}
-			break;
+			
 		}
-		List<Treasure> treasures = this.myMap.getTreasures();
-		String states = "Treasures:";
-		for (Treasure treasure : treasures) {
-			states += ("\n\t"+treasure.toString());
-		}
-		System.out.println(states);
 	}
 }

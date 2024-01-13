@@ -38,6 +38,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 	 */
 	private static final long serialVersionUID = -1784844593772918359L;
 	private boolean onMission = false;
+	private int countdown = 50;
 
 
 
@@ -138,23 +139,22 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				while(!((AbstractDedaleAgent)this).moveTo(nextNode)) {
 					doWait(100);
 				}
-				System.out.println(this.getLocalName()+" - Moving to "+nextNode.getLocationId());
 				doWait(200);
 			}else {
-				for(Couple<Location, List<Couple<Observation,Integer>>> c: lobs) {
-					if(c.getLeft().getLocationId().equals(node)) {
-						nextNode = c.getLeft();
-					}
-				}
 				return false;
-			}		
+			}
+			if(countdown == 0) {
+				onMission = false;
+				countdown = 50;
+				return false;
+			}
 		}
 		return true;
 	}
 
 	private List<String> evaluateAction(Treasure t) {
 		System.out.println(this.getLocalName()+" - Asking for path to treasure "+t.getId());
-		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
+		ACLMessage msg=new ACLMessage(ACLMessage.REQUEST);
 
 		msg.setSender(this.getAID());
 		msg.setProtocol("GetPathToTreasure");
@@ -165,11 +165,10 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		if (myPosition!=null && myPosition.getLocationId()!=""){
 			msg.setContent(myPosition.getLocationId()+";"+t.getId());
 
-			msg.addReceiver(new AID("e1",AID.ISLOCALNAME));
-			msg.addReceiver(new AID("e2",AID.ISLOCALNAME));
-			msg.addReceiver(new AID("e3",AID.ISLOCALNAME));
-			msg.addReceiver(new AID("m1",AID.ISLOCALNAME));
-			// msg.addReceiver(new AID("m2",AID.ISLOCALNAME));
+			msg.addReceiver(new AID("Explorer 1",AID.ISLOCALNAME));
+			msg.addReceiver(new AID("Explorer 2",AID.ISLOCALNAME));
+			msg.addReceiver(new AID("Explorer 3",AID.ISLOCALNAME));
+			msg.addReceiver(new AID("Manager 1",AID.ISLOCALNAME));
 			// msg.addReceiver(new AID("m3",AID.ISLOCALNAME));
 			// msg.addReceiver(new AID("m4",AID.ISLOCALNAME));
 			// msg.addReceiver(new AID("m5",AID.ISLOCALNAME));									
@@ -242,6 +241,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 			//Example to retrieve the current position
 			Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
+
 			if (myPosition!=null && myPosition.getLocationId()!="") {
 				List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
@@ -249,6 +249,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				//example related to the use of the backpack for the treasure hunt
 				Boolean b=false;
 				Boolean collected = true;
+				boolean grabbed = false;
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
@@ -261,30 +262,30 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 									System.out.println(this.myAgent.getLocalName()+" - Grabbed "+amount+" "+o.getLeft()+" from a total of "+o.getRight()+" at "+myPosition.getLocationId());
 									System.out.println(this.myAgent.getLocalName()+" - My current backpack free space is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 									b=true;
+									grabbed = true;
 									collected = false;
-								}
 
-								if(amount == o.getRight()) {
-									collected = true;
-									System.out.println(this.myAgent.getLocalName()+" - Treasure collected completely");
-									ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
-			
-									msg.setSender(this.myAgent.getAID());
-									msg.setProtocol("UpdateTreasure");
+									if(amount == o.getRight()) {
+										collected = true;
+										System.out.println(this.myAgent.getLocalName()+" - Treasure collected completely");
+										ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
+				
+										msg.setSender(this.myAgent.getAID());
+										msg.setProtocol("UpdateTreasure");
 
-									if (myPosition!=null && myPosition.getLocationId()!=""){
-										msg.setContent(myPosition.getLocationId());
+										if (myPosition!=null && myPosition.getLocationId()!=""){
+											msg.setContent(myPosition.getLocationId());
 
-										msg.addReceiver(new AID("e1",AID.ISLOCALNAME));
-										msg.addReceiver(new AID("e2",AID.ISLOCALNAME));
-										msg.addReceiver(new AID("e3",AID.ISLOCALNAME));
-										msg.addReceiver(new AID("m1",AID.ISLOCALNAME));
-										// msg.addReceiver(new AID("m2",AID.ISLOCALNAME));
-										// msg.addReceiver(new AID("m3",AID.ISLOCALNAME));
-										// msg.addReceiver(new AID("m4",AID.ISLOCALNAME));
-										// msg.addReceiver(new AID("m5",AID.ISLOCALNAME));									
+											msg.addReceiver(new AID("Explorer 1",AID.ISLOCALNAME));
+											msg.addReceiver(new AID("Explorer 2",AID.ISLOCALNAME));
+											msg.addReceiver(new AID("Explorer 3",AID.ISLOCALNAME));
+											msg.addReceiver(new AID("Manager 1",AID.ISLOCALNAME));
+											// msg.addReceiver(new AID("m3",AID.ISLOCALNAME));
+											// msg.addReceiver(new AID("m4",AID.ISLOCALNAME));
+											// msg.addReceiver(new AID("m5",AID.ISLOCALNAME));									
 
-										((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+											((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+										}
 									}
 								}
 							}	
@@ -294,21 +295,49 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 						break;
 					}
 				}
-
 				
 				//Trying to store everything in the tanker
-				if(b || (((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace().get(0).getRight() == 0)) {
-					System.out.println(this.myAgent.getLocalName()+" - Trying to store treasure in a tanker");
-					Boolean success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("t1");
-					if(success) {
-						System.out.println(this.myAgent.getLocalName()+" - Stored treasure in tanker t1");
-					}else{
-						success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("t2");
+				boolean called = false;
+				boolean stored = false;
+				if(grabbed) {
+					while(!stored) {
+						System.out.println(this.myAgent.getLocalName()+" - Trying to store treasure in a tanker");
+						Boolean success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker 1");
 						if(success) {
-							System.out.println(this.myAgent.getLocalName()+" - Stored treasure in tanker t2");
+							System.out.println(this.myAgent.getLocalName()+" - Stored treasure in Tanker 1");
+							stored = true;
 						}else{
-							System.out.println(this.myAgent.getLocalName()+" - Failed to store treasure in tanker");
+							success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker 2");
+							if(success) {
+								System.out.println(this.myAgent.getLocalName()+" - Stored treasure in Tanker 2");
+								stored = true;
+							}else{
+								if(!called)
+									System.out.println(this.myAgent.getLocalName()+" - Failed to store treasure in tanker");
+							}
 						}
+						if(collected)
+							System.out.println(this.myAgent.getLocalName()+" - Treasure collected completely");
+	
+						if(!called && !stored) {
+							called = true;
+							ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
+	
+							msg.setSender(this.myAgent.getAID());
+							msg.setProtocol("HelpCollector");
+	
+							if (myPosition!=null && myPosition.getLocationId()!=""){
+								msg.setContent(myPosition.getLocationId());
+	
+								msg.addReceiver(new AID("Explorer 1",AID.ISLOCALNAME));
+								msg.addReceiver(new AID("Explorer 2",AID.ISLOCALNAME));
+								msg.addReceiver(new AID("Explorer 3",AID.ISLOCALNAME));
+								msg.addReceiver(new AID("Manager 1",AID.ISLOCALNAME));				
+	
+								((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+							}
+						}
+						doWait(2000);
 					}
 				}
 
@@ -324,6 +353,11 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 					}while(lobs.get(moveId).getLeft().equals(prevLoc) && prevLoc != null);
 					prevLoc = myPosition;
 					((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+				}
+				countdown -= 1;
+				if(countdown == 0) {
+					countdown = 50;
+					onMission = false;
 				}
 			}
 		}
