@@ -2,7 +2,7 @@
   {
     "agentType":"agentExplo",
     "agentName": "e1",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -13,7 +13,7 @@
   {
     "agentType":"agentExplo",
     "agentName": "e2",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -24,7 +24,7 @@
   {
     "agentType":"agentExplo",
     "agentName": "e3",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -35,7 +35,7 @@
   {
     "agentType":"agentCollect",
     "agentName": "c1",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": 50,
     "backPackCapacityDiamond":-1,
@@ -46,7 +46,7 @@
   {
     "agentType":"agentCollect",
     "agentName": "c2",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": 50,
     "backPackCapacityDiamond":-1,
@@ -57,7 +57,7 @@
   {
     "agentType":"agentCollect",
     "agentName": "c3",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":50,
@@ -68,7 +68,7 @@
   {
     "agentType":"agentCollect",
     "agentName": "c4",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":50,
@@ -79,7 +79,7 @@
   {
     "agentType":"agentTanker",
     "agentName": "t1",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold":400,
     "backPackCapacityDiamond":400,
@@ -90,7 +90,7 @@
   {
     "agentType":"agentTanker",
     "agentName": "t2",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold":400,
     "backPackCapacityDiamond":400,
@@ -101,7 +101,7 @@
   {
     "agentType":"wumpus",
     "agentName": "m1",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -112,7 +112,7 @@
   {
     "agentType": "wumpus",
     "agentName": "m2",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond": -1,
@@ -123,7 +123,7 @@
   {
     "agentType":"wumpus",
     "agentName": "m3",
-    "communicationRange": 100,
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,
@@ -134,7 +134,18 @@
   {
     "agentType":"wumpus",
     "agentName": "m4",
-    "communicationRange": 100,
+    "communicationRange": 50,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
+  },
+  {
+    "agentType":"wumpus",
+    "agentName": "m5",
+    "communicationRange": 50,
     "initialLocation": "free",
     "backPackCapacityGold": -1,
     "backPackCapacityDiamond":-1,

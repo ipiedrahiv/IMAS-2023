@@ -12,6 +12,7 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
+import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 
@@ -46,6 +47,7 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
 		lb.add(new RandomTankerBehaviour(this));
+		lb.add(new SemiRandomWalkBehaviour(this));
 		
 		addBehaviour(new startMyBehaviours(this,lb));
 		
@@ -84,14 +86,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	@Override
 	public void onTick() {
 		//Example to retrieve the current position
-		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
-		if (myPosition!=null){
-			//List of observable from the agent's current position
-			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 		
-		}
 
 	}
 

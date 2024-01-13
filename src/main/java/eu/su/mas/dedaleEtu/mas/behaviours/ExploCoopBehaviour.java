@@ -16,7 +16,9 @@ import eu.su.mas.dedale.env.gs.gsLocation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
 import eu.su.mas.dedaleEtu.mas.behaviours.ShareMapBehaviour;
 
 
@@ -47,6 +49,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	private static final long serialVersionUID = 8567689731496787661L;
 
 	private boolean finished = false;
+	private boolean explored = false;
+	private Location prevLoc = null;
 
 	/**
 	 * Current knowledge of the agent regarding the environment
@@ -54,6 +58,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	private MapRepresentation myMap;
 
 	private List<String> list_agentNames;
+	private int count = 0;
 
 /**
  * 
@@ -74,7 +79,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 		if(this.myMap==null) {
 			this.myMap= MapRepresentation.getInstance();
-			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent,500,this.myMap,list_agentNames));
 		}
 
 		//0) Retrieve the current position
@@ -88,7 +92,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(1000);
+				this.myAgent.doWait(200);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -109,48 +113,111 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}
 			}
 
+			//2.5) Check if there is a treasure in the current node and add it to treasure list if it exists
+			unlockTreasure(myPosition, lobs);
+			
+
 			//3) while openNodes is not empty, continues.
-			if (!this.myMap.hasOpenNode() || finished){
-				//Explo finished
-				finished=true;
-				System.out.println("***************\n" +
-								"******************\n" +
-								"******************\n" +
-								"******************\n" +
-								"******************\n" +
-								"******************\n" + this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
-				moveRandom();
-			}else{
-				//4) select next move.
-				//4.1 If there exist one open node directly reachable, go for it,
-				//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
-				if (nextNodeId==null){
-					//no directly accessible openNode
-					//chose one, compute the path and take the first step.
-					nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);//getShortestPath(myPosition,this.openNodes.get(0)).get(0);
-					//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
+			if(!explored) {
+				if(count > 0) {
+					moveRandom(myPosition);
 				}else {
-					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
+					if (!this.myMap.hasOpenNode()){
+						//Explo finished
+						explored=true;
+						System.out.println(this.myAgent.getLocalName()+" - Exploration completed succesfully.");
+					}else{
+						//4) select next move.
+						//4.1 If there exist one open node directly reachable, go for it,
+						//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
+						if (nextNodeId==null){
+							//no directly accessible openNode
+							//chose one, compute the path and take the first step.
+							try {
+								nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);
+								if(!((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId))) {
+									count += 3;
+								}
+							}catch(Exception e) {
+								moveRandom(myPosition);
+							}
+						}else {
+							//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
+						}
+					}		
 				}
-
-				((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId));
+			}else {
+				if(!moveTowardsTreasure(myPosition)) {
+					moveRandom(myPosition);
+				}else{
+					unlockTreasure(myPosition, lobs);
+				}
 			}
-
+			count -= 1;
 		}
 	}
 
-	private void moveRandom() {
-		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+	public void unlockTreasure(Location myPosition, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs) {
+		List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
+			for(Couple<Observation,Integer> o:lObservations){
+				switch (o.getLeft()) {
+				case DIAMOND:case GOLD:
+					Boolean added = this.myMap.addTreasure(myPosition.getLocationId(), o.getRight(), o.getLeft());
+					if(added) {
+						System.out.println(this.myAgent.getLocalName()+" - New treasure ("+ o.getLeft()+" - "+o.getRight()+") found at "+myPosition.getLocationId());
+					}
+					if(!this.myMap.checkUnlocked(myPosition.getLocationId())) {
+						Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
+						if(success) {
+							this.myMap.unlockTreasure(myPosition.getLocationId());
+							System.out.println(this.myAgent.getLocalName()+" - Opened lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
+						}else{
+							System.out.println(this.myAgent.getLocalName()+" - Failed to open lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+	}
+
+	public boolean moveTowardsTreasure(Location myPosition) {
+		if(myPosition != null && myPosition.getLocationId()!="") {
+			List<Treasure> treasures = this.myMap.getTreasures();
+			List<String> minPath = null;
+			int minPathSize = Integer.MAX_VALUE;
+			for(Treasure t : treasures) {
+				if(t.getState() == State.LOCKED) {
+					List<String> path = this.myMap.getShortestPath(myPosition.getLocationId(), t.getId());
+					if(path != null && path.size() > 0 && path.size() < minPathSize) {
+						minPathSize = path.size();
+						minPath = path;
+					}
+				}
+			}
+			if(minPath != null && minPathSize > 0) {
+				((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(minPath.get(0)));
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	private void moveRandom(Location myPosition) {
 
 		if (myPosition!=null && myPosition.getLocationId()!=""){
-			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
 
 			//Random move from the current position
-			Random r= new Random();
-			int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+			int moveId;
+			do{
+				Random r= new Random();
+				moveId = 1 + r.nextInt(lobs.size()-1);
+			}while(lobs.get(moveId).getLeft() == prevLoc && prevLoc != null);
+			prevLoc = myPosition;
 
-			//The move action (if any) should be the last action of your behaviour
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 		}
 	}

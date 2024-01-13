@@ -24,10 +24,10 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 	 *
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
-	private Location prevId = null;
+	private Location prevLoc = null;
 
 	public SemiRandomWalkBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 500);
+		super(myagent, 200);
 		//super(myagent);
 	}
 
@@ -42,11 +42,16 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 
 			//Random move from the current position
 			int moveId;
-				do{
+			if(prevLoc == null) {
+				prevLoc = myPosition;
+			}
+			do{
 				Random r= new Random();
 				moveId = 1 + r.nextInt(lobs.size()-1);
-			}while(lobs.get(moveId).getLeft() == prevId && prevId != null);
-			prevId = myPosition;
+			}while(lobs.get(moveId).getLeft().equals(prevLoc) && prevLoc != null);
+			prevLoc = myPosition;
+
+			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 
 			//The move action (if any) should be the last action of your behaviour
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());

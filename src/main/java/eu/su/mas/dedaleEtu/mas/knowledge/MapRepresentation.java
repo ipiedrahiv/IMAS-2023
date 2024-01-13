@@ -25,6 +25,8 @@ import dataStructures.serializableGraph.*;
 import dataStructures.tuple.Couple;
 import javafx.application.Platform;
 
+import eu.su.mas.dedale.env.Observation;
+
 /**
  * This simple topology representation only deals with the graph, not its content.</br>
  * The knowledge representation is not well written (at all), it is just given as a minimal example.</br>
@@ -46,6 +48,8 @@ public class MapRepresentation implements Serializable {
 	}
 
 	private static final long serialVersionUID = -1333959882640838272L;
+		
+	private List<Treasure> treasures = new ArrayList<Treasure>();
 
 	// Singleton instance
 	private static MapRepresentation instance;
@@ -90,12 +94,70 @@ public class MapRepresentation implements Serializable {
 		this.nbEdges=0;
 	}
 
+	private synchronized boolean treasureContained(List<Treasure> list, String id) {
+		for (Treasure t : list) {
+			if (t.getId().equals(id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public synchronized boolean addTreasure(String id, int amount, Observation type) {
+		if (!treasureContained(this.treasures, id)) {
+			this.treasures.add(new Treasure(id, amount, State.LOCKED, type));
+			return true;
+		}
+		return false;
+	}
+
+	public synchronized boolean unlockTreasure(String id) {
+		for (Treasure t : this.treasures) {
+			if (t.getId().equals(id)) {
+				t.setState(State.UNLOCKED);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public synchronized boolean checkUnlocked(String id) {
+		for (Treasure t : this.treasures) {
+			if (t.getId().equals(id)) {
+				return t.getState() == State.UNLOCKED;
+			}
+		}
+		return false;
+	}
+
+	public synchronized void updateTreasure(String id) {
+		for (Treasure t : this.treasures) {
+			if (t.getId().equals(id)) {
+				t.setState(State.COLLECTED);
+			}
+		}
+	}
+
+	public List<Treasure> getUnlockedTreasures() {
+		List<Treasure> unlockedTreasures = new ArrayList<Treasure>();
+		for (Treasure t : this.treasures) {
+			if (t.getState() == State.UNLOCKED) {
+				unlockedTreasures.add(t);
+			}
+		}
+		return unlockedTreasures;
+	}
+
+	public synchronized List<Treasure> getTreasures() {
+		return treasures;
+	}
+
 	/**
 	 * Add or replace a node and its attribute 
 	 * @param id unique identifier of the node
 	 * @param mapAttribute attribute to process
 	 */
-	public synchronized void addNode(String id,MapAttribute mapAttribute){
+	public synchronized void addNode(String id, MapAttribute mapAttribute){
 		Node n;
 		if (this.g.getNode(id)==null){
 			n=this.g.addNode(id);
@@ -153,6 +215,9 @@ public class MapRepresentation implements Serializable {
 
 		Dijkstra dijkstra = new Dijkstra();//number of edge
 		dijkstra.init(g);
+		if(g.getNode(idFrom)==null) {
+			return null;
+		}
 		dijkstra.setSource(g.getNode(idFrom));
 		dijkstra.compute();//compute the distance to all nodes from idFrom
 		List<Node> path=dijkstra.getPath(g.getNode(idTo)).getNodePath(); //the shortest path from idFrom to idTo
@@ -321,7 +386,7 @@ public class MapRepresentation implements Serializable {
 	 * 
 	 * @return true if there exist at least one openNode on the graph 
 	 */
-	public boolean hasOpenNode() {
+	public synchronized boolean hasOpenNode() {
 		return (this.g.nodes()
 				.filter(n -> n.getAttribute("ui.class")==MapAttribute.open.toString())
 				.findAny()).isPresent();
