@@ -247,7 +247,8 @@
         <!-- <img src="./assets/architecture.png" alt="Italian Trulli" style="width: 700px;"> -->
       </section>
 
-      <!-- Slide 5 -->
+      <section>
+        <!-- Slide 5 -->
       <section>
         <div class="content">
           <div class="bullets1">
@@ -272,7 +273,7 @@
                     style="width:100%; max-width:100px; max-height:100px;" /></td>
                 <td style="border: 1px solid black;">
                   <div style="font-size: smaller;">
-                    \(C = d + a\left(\frac{p_a - p}{p_a}\right) + b\left(\frac{s - s_a}{s_a}\right)\)
+                    \(C = d + \alpha\left(lp_{a} - lp\right) + \beta\left(s_{a}-s\right)\)
                   </div>
                 </td>
               </tr>
@@ -292,7 +293,7 @@
         </div>
       </section>
 
-<!-- Slide 6 -->
+      <!-- Slide 6 -->
       <section>
         <div class="content">
           <div class="bullets1">
@@ -301,14 +302,15 @@
             <h3 style="color: #5697ac;">Broadcasting contracts</h3>
           </div>
           <div class="fragment right" style="width: 100%;">
-            <img class="fragment" src="./assets/coordination.png" alt="Italian Trulli"
-                style="width: 500%;">
+            <img class="fragment" src="./assets/coordination.png" alt="Italian Trulli" style="width: 500%;">
             <!-- Table ends here -->
           </div>
         </div>
       </section>
+      </section>
 
- <!-- Slide 7 -->
+      <section>
+        <!-- Slide 7 -->
       <section>
         <div class="content">
           <div class="image2">
@@ -320,8 +322,10 @@
           <div class="bullets2">
             <br><br><br>
             <ul>
-              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress og the map and treasures</li>
-              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different access levels accordinf to the type of agent</li>
+              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress og
+                the map and treasures</li>
+              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different
+                access levels accordinf to the type of agent</li>
               <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Treasure states:</li>
               <div class="fragment custom blur">
                 <ul>
@@ -332,26 +336,109 @@
                   <li class="items" align="justify">Stores</li>
                 </ul>
               </div>
-                          </ul>
+            </ul>
           </div>
         </div>
       </section>
 
+      <!-- Slide 8 -->
       <section>
-        <h2>Problem description</h2>
-
-        <p class="fragment">Fade in</p>
-        <p class="fragment fade-out">Fade out</p>
-        <p class="fragment highlight-red">Highlight red</p>
-        <p class="fragment fade-in-then-out">Fade in, then out</p>
-        <p class="fragment fade-up">Slide up while fading in</p>
+        <h2>Results Sharing</h2>
+        <div class="content">
+          <div class="image2">
+            <h3 style="color: #5697ac; font-size: 40px;">Publish/Subscribe</h3>
+            <ul>
+              <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Events:</li>
+              <div class="fragment custom blur">
+                <ul>
+                  <li class="items" align="justify">Explorer</li>
+                  <ul>
+                    <li class="items" align="justify">Explorer finds a treasure</li>
+                    <li class="items" align="justify">Explorer opens a treasure</li>
+                  </ul>
+                  <li class="items" align="justify">Collector</li>
+                  <ul>
+                    <li class="items" align="justify">Collector finds a treasure</li>
+                    <li class="items" align="justify">Collector opens a treasure</li>
+                    <li class="items" align="justify">Collector collects a treasure</li>
+                  </ul>
+                  <li class="items" align="justify">Tanker</li>
+                  <ul>
+                    <li class="items" align="justify">Tanker stores a treasure</li>
+                  </ul>
+                </ul>
+              </div>
+            </ul>
+          </div>
+          <div class="bullets2">
+            <br>
+            <img src="./assets/subscribe.png" alt="Italian Trulli">
+          </div>
+        </div>
+      </section>
       </section>
 
+
+      <!-- Slide 9 -->
+
+
       <section>
-        <p class="fragment custom blur">One</p>
-        <p class="fragment custom blur">Two</p>
-        <p class="fragment custom blur">Three</p>
+        <h2>Social Norms</h2>
+        <div class="content">
+          <div class="fragment custom blur column"
+            style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
+            <div class="latex" style="text-align: center;">
+              <div style="font-size: 15px;">
+                \( f(H) =
+                \begin{cases}
+                id_x & \text{if } busy_x > busy_y \\
+                id_y & \text{if } busy_x < busy_y \\ id_x & \text{if } type_x> type_y \text{ and } busy_x = busy_y \\
+                  id_y & \text{if } type_x < type_y \text{ and } busy_x=busy_y \\ id_x & \text{otherwise} \end{cases} \)
+                    </div>
+              </div>
+              <div class="image">
+                <img src="./assets/SN1.png" alt="Italian Trulli">
+              </div>
+            </div>
+            <div class="fragment custom blur column"
+              style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
+              <div class="image">
+                <img src="./assets/SN_tankers.png" alt="Italian Trulli">
+              </div>
+            </div>
+            <div class="fragment custom blur column"
+              style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
+              <div class="image">
+                <img src="./assets/SN3.png" alt="Italian Trulli">
+              </div>
+            </div>
+          </div>
       </section>
+
+<!-- Cover -->
+      <section>
+        <h1 style="color: #79b6c9;">TREASURE HUNT PROBLEM</h1>
+        <h3>Introduction to Multi-Agent Systems</h3>
+        <h4>Master in Artificial Intelligence</h4>
+        <p style="font-size: 20px;">Martín Suárez | Isabel Priedrahita | Mario Rosas | Laura Roldan |
+          Alam López</p>
+      </section>
+
+      <!-- <section> -->
+      <!--   <h2>Problem description</h2> -->
+
+      <!--   <p class="fragment">Fade in</p> -->
+      <!--   <p class="fragment fade-out">Fade out</p> -->
+      <!--   <p class="fragment highlight-red">Highlight red</p> -->
+      <!--   <p class="fragment fade-in-then-out">Fade in, then out</p> -->
+      <!--   <p class="fragment fade-up">Slide up while fading in</p> -->
+      <!-- </section> -->
+
+      <!-- <section> -->
+      <!--   <p class="fragment custom blur">One</p> -->
+      <!--   <p class="fragment custom blur">Two</p> -->
+      <!--   <p class="fragment custom blur">Three</p> -->
+      <!-- </section> -->
       <!-- <section>Slide 2</section> -->
     </div>
   </div>
