@@ -10,6 +10,7 @@ import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyMovingAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyTankerAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.explo.ExploreCoopAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.explo.ExploreSoloAgent;
+import eu.su.mas.dedale.env.InGameConfigurationFile;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agents.GateKeeperAgent;
 import eu.su.mas.dedale.mas.agents.dedaleDummyAgents.DummyWumpusShift;
@@ -44,6 +45,8 @@ public class Principal {
 	private static Runtime rt;	
 
 	public static void main(String[] args){
+		
+		InGameConfigurationFile.PERCENTAGE_TREASURE_LOSS = 0d;
 
 		if(ConfigurationFile.COMPUTERisMAIN){
 			//Whe should create the Platform and the GateKeeper, whether the platform is distributed or not 
@@ -312,10 +315,10 @@ public class Principal {
 		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
 		agentList.add(ag);
 		agentName = "t1";
-		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		ag = createNewDedaleAgent(c, agentName, DummyTankerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
 		agentName = "t2";
-		ag = createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParameters);
+		ag = createNewDedaleAgent(c, agentName, DummyTankerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
 		agentName = "m1";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
@@ -327,6 +330,9 @@ public class Principal {
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
 		agentName = "m4";
+		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "m5";
 		ag = createNewDedaleAgent(c, agentName, DummyManagerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
 

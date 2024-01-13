@@ -86,7 +86,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		 *  
 		 */
 		private static final long serialVersionUID = 9088209402507795289L;
-		private Location prevId = null;
+		private Location prevLoc = null;
 
 		public SemiRandomWalkExchangeBehaviour (final AbstractDedaleAgent myagent) {
 			super(myagent, 500);
@@ -99,10 +99,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 			Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
 			if (myPosition!=null && myPosition.getLocationId()!=""){
-				List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-				// System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
-
-				//list of observations associated to the currentPosition
+				List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
 
 				//example related to the use of the backpack for the treasure hunt
@@ -110,54 +107,53 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
-						if(o.getLeft()==((AbstractDedaleAgent) this.myAgent).getMyTreasureType()) {
-							Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
-							if(success) {
-								((AbstractDedaleAgent) this.myAgent).pick();
-							}
-						}
-						// System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
-						// System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-						// System.out.println(this.myAgent.getLocalName()+" - I try to open the safe: "+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
-						// System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
-						// System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
-						// System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-						b=true;
+						Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
+						if(success) {
+							System.out.println(this.myAgent.getLocalName()+" - Opened lock at "+myPosition.getLocationId());
+							if(o.getLeft()==((AbstractDedaleAgent) this.myAgent).getMyTreasureType()) {
+								int amount = ((AbstractDedaleAgent) this.myAgent).pick();
+								if(amount > 0) {
+									System.out.println(this.myAgent.getLocalName()+" - Grabbed "+amount+" "+o.getLeft()+" from a total of "+o.getRight()+" at "+myPosition.getLocationId());
+									System.out.println(this.myAgent.getLocalName()+" - My current backpack free space is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+									b=true;
+								}
+							}	
+						}	
 						break;
 					default:
 						break;
 					}
 				}
 
-				//If the agent picked (part of) the treasure
-				if (b){
-					// List<Couple<Location,List<Couple<Observation,Integer>>>> lobs2=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-					// System.out.println("State of the observations after picking "+lobs2);
-				}
-
 				//Trying to store everything in the tanker
-				Boolean success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tank");
-				if(success) {
-					System.out.println(this.myAgent.getLocalName()+" - Stored treasure in tanker");
+				if(b || (((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace().get(0).getRight() == 0)) {
+					System.out.println(this.myAgent.getLocalName()+" - Trying to store treasure in a tanker");
+					Boolean success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("t1");
+					if(success) {
+						System.out.println(this.myAgent.getLocalName()+" - Stored treasure in tanker t1");
+					}else{
+						success = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("t2");
+						if(success) {
+							System.out.println(this.myAgent.getLocalName()+" - Stored treasure in tanker t2");
+						}else{
+							System.out.println(this.myAgent.getLocalName()+" - Failed to store treasure in tanker");
+						}
+					}
 				}
 
-				// System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
-				// System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer its load into the Silo (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tank"));
-				// System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
-
-				//Random move from the current position
+				//Only move if the treasure has been collected completely
 				int moveId;
+				if(prevLoc == null) {
+					prevLoc = myPosition;
+				}
 				do{
 					Random r= new Random();
 					moveId = 1 + r.nextInt(lobs.size()-1);
-				}while(lobs.get(moveId).getLeft() == prevId && prevId != null);
-				prevId = myPosition;
+				}while(lobs.get(moveId).getLeft().equals(prevLoc) && prevLoc != null);
+				prevLoc = myPosition;
 
-				//The move action (if any) should be the last action of your behaviour
 				((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 			}
-
 		}
-
 	}
 }

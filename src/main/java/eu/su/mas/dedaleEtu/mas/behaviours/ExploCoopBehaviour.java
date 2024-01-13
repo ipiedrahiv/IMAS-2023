@@ -47,6 +47,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	private static final long serialVersionUID = 8567689731496787661L;
 
 	private boolean finished = false;
+	private boolean explored = false;
+	private Location prevLoc = null;
 
 	/**
 	 * Current knowledge of the agent regarding the environment
@@ -88,7 +90,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(1000);
+				this.myAgent.doWait(500);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -109,48 +111,72 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}
 			}
 
-			//3) while openNodes is not empty, continues.
-			if (!this.myMap.hasOpenNode() || finished){
-				//Explo finished
-				finished=true;
-				System.out.println("***************\n" +
-								"******************\n" +
-								"******************\n" +
-								"******************\n" +
-								"******************\n" +
-								"******************\n" + this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
-				moveRandom();
-			}else{
-				//4) select next move.
-				//4.1 If there exist one open node directly reachable, go for it,
-				//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
-				if (nextNodeId==null){
-					//no directly accessible openNode
-					//chose one, compute the path and take the first step.
-					nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);//getShortestPath(myPosition,this.openNodes.get(0)).get(0);
-					//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
-				}else {
-					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
+			//2.5) Check if there is a treasure in the current node and add it to treasure list if it exists
+			List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
+			for(Couple<Observation,Integer> o:lObservations){
+				switch (o.getLeft()) {
+				case DIAMOND:case GOLD:
+					Boolean added = this.myMap.addTreasure(myPosition.getLocationId(), o.getLeft());
+					if(added) {
+						System.out.println(this.myAgent.getLocalName()+" - New treasure ("+ o.getLeft()+" - "+o.getRight()+") found at "+myPosition.getLocationId());
+					}
+					if(!this.myMap.checkUnlocked(o.getLeft(), myPosition.getLocationId())) {
+						Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
+						if(success) {
+							System.out.println(this.myAgent.getLocalName()+" - Opened lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
+						}else{
+							System.out.println(this.myAgent.getLocalName()+" - Failed to open lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
+						}
+					}
+					break;
+				default:
+					break;
 				}
-
-				((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId));
 			}
 
+
+			//3) while openNodes is not empty, continues.
+			if(!explored) {
+				if (!this.myMap.hasOpenNode()){
+					//Explo finished
+					explored=true;
+					System.out.println(this.myAgent.getLocalName()+" - Exploration completed succesfully.");
+				}else{
+					//4) select next move.
+					//4.1 If there exist one open node directly reachable, go for it,
+					//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
+					if (nextNodeId==null){
+						//no directly accessible openNode
+						//chose one, compute the path and take the first step.
+						nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);//getShortestPath(myPosition,this.openNodes.get(0)).get(0);
+						//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
+					}else {
+						//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
+					}
+	
+					if(!((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId))) {
+						moveRandom(myPosition);
+					}
+				}
+			}else {
+				moveRandom(myPosition);
+			}
 		}
 	}
 
-	private void moveRandom() {
-		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+	private void moveRandom(Location myPosition) {
 
 		if (myPosition!=null && myPosition.getLocationId()!=""){
-			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
 
 			//Random move from the current position
-			Random r= new Random();
-			int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+			int moveId;
+				do{
+				Random r= new Random();
+				moveId = 1 + r.nextInt(lobs.size()-1);
+			}while(lobs.get(moveId).getLeft() == prevLoc && prevLoc != null);
+			prevLoc = myPosition;
 
-			//The move action (if any) should be the last action of your behaviour
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 		}
 	}

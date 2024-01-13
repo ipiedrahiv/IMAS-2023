@@ -25,6 +25,8 @@ import dataStructures.serializableGraph.*;
 import dataStructures.tuple.Couple;
 import javafx.application.Platform;
 
+import eu.su.mas.dedale.env.Observation;
+
 /**
  * This simple topology representation only deals with the graph, not its content.</br>
  * The knowledge representation is not well written (at all), it is just given as a minimal example.</br>
@@ -45,7 +47,13 @@ public class MapRepresentation implements Serializable {
 
 	}
 
+	public enum State {
+		locked, unlocked;
+	}
+
 	private static final long serialVersionUID = -1333959882640838272L;
+	private List<Couple<String, State>> goldTreasures = new ArrayList<Couple<String, State>>();
+	private List<Couple<String, State>> diamondTreasures = new ArrayList<Couple<String, State>>();
 
 	// Singleton instance
 	private static MapRepresentation instance;
@@ -90,12 +98,83 @@ public class MapRepresentation implements Serializable {
 		this.nbEdges=0;
 	}
 
+	private synchronized boolean treasureContained(List<Couple<String, State>> list, String id) {
+		for (Couple<String, State> t : list) {
+			if (t.getLeft().equals(id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public synchronized boolean addTreasure(String id, Observation type) {
+		if (type == Observation.GOLD) {
+			if (!treasureContained(this.goldTreasures, id)) {
+				this.goldTreasures.add(new Couple<String, State>(id, State.locked));
+				return true;
+			}
+		} else if (type == Observation.DIAMOND) {
+			if (!treasureContained(this.diamondTreasures, id)) {
+				this.diamondTreasures.add(new Couple<String, State>(id, State.locked));
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public synchronized boolean unlockTreasure(Observation type, String id) {
+		if (type == Observation.GOLD) {
+			for (Couple<String, State> t : this.goldTreasures) {
+				if (t.getLeft().equals(id)) {
+					t = new Couple<String, State>(id, State.unlocked);
+					return true;
+				}
+			}
+		} else if (type == Observation.DIAMOND) {
+			for (Couple<String, State> t : this.diamondTreasures) {
+				if (t.getLeft().equals(id)) {
+					t = new Couple<String, State>(id, State.unlocked);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public synchronized boolean checkUnlocked(Observation type, String id) {
+		if (type == Observation.GOLD) {
+			for (Couple<String, State> t : this.goldTreasures) {
+				if (t.getLeft().equals(id)) {
+					return t.getRight() == State.unlocked;
+				}
+			}
+		} else if (type == Observation.DIAMOND) {
+			for (Couple<String, State> t : this.diamondTreasures) {
+				if (t.getLeft().equals(id)) {
+					return t.getRight() == State.unlocked;
+				}
+			}
+		}
+		return false;
+	}
+
+	public synchronized List<Couple<String, State>> getTreasures(Observation type) {
+		if (type == Observation.GOLD) {
+			return goldTreasures;
+			
+		} else if (type == Observation.DIAMOND) {
+			return diamondTreasures;
+		}else {
+			return null;
+		}
+	}
+
 	/**
 	 * Add or replace a node and its attribute 
 	 * @param id unique identifier of the node
 	 * @param mapAttribute attribute to process
 	 */
-	public synchronized void addNode(String id,MapAttribute mapAttribute){
+	public synchronized void addNode(String id, MapAttribute mapAttribute){
 		Node n;
 		if (this.g.getNode(id)==null){
 			n=this.g.addNode(id);
