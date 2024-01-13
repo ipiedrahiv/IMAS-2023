@@ -27,7 +27,7 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 	private Location prevLoc = null;
 
 	public SemiRandomWalkBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 500);
+		super(myagent, 200);
 		//super(myagent);
 	}
 

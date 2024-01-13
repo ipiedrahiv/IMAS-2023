@@ -6,10 +6,15 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.util.leap.Map;
 import jade.util.leap.Serializable;
 
 import java.util.Enumeration;
 import java.util.Vector;
+
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
 
 public class DedaleContractNetInitiator extends DedaleInitiator {
     public final String ALL_ACCEPTANCES_KEY = "__all-acceptances" + this.hashCode();
@@ -19,13 +24,15 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
     private boolean skipNextRespFlag;
     private boolean moreAcceptancesToSend;
     private String[] toBeReset;
+    private MapRepresentation myMap;
 
-    public DedaleContractNetInitiator(Agent a, ACLMessage cfp) {
-        this(a, cfp, new DataStore());
+    public DedaleContractNetInitiator(Agent a, ACLMessage cfp, MapRepresentation myMap) {
+        this(a, cfp, new DataStore(), myMap);
     }
 
-    public DedaleContractNetInitiator(Agent a, ACLMessage cfp, DataStore store) {
+    public DedaleContractNetInitiator(Agent a, ACLMessage cfp, DataStore store, MapRepresentation myMap) {
         super(a, cfp, store);
+        this.myMap = myMap;
         this.step = 1;
         this.skipNextRespFlag = false;
         this.moreAcceptancesToSend = false;
@@ -171,15 +178,22 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
     }
 
     protected void handlePropose(ACLMessage propose, Vector<ACLMessage> acceptances) {
-        System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
+        System.out.println("Agent "+propose.getSender().getLocalName()+" proposed "+propose.getContent().split(";").length+" steps");
     }
 
     protected void handleRefuse(ACLMessage refuse) {
-        System.out.println("Agent "+refuse.getSender().getName()+" refused");
+        System.out.println("Agent "+refuse.getSender().getLocalName()+" refused");
     }
 
     protected void handleInform(ACLMessage inform) {
         System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
+        Treasure t = new Treasure(inform.getContent());
+        for (Treasure treasure : this.myMap.getTreasures()) {
+            if (treasure.getId().equals(t.getId())) {
+                treasure.setState(State.COLLECTED);
+                break;
+            }
+        }
     }
 
     protected void handleAllResponses(Vector<ACLMessage> responses, Vector<ACLMessage> acceptances) {
@@ -199,7 +213,7 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
                 ACLMessage reply = msg.createReply();
                 reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                 acceptances.addElement(reply);
-                int proposal = Integer.parseInt(msg.getContent());
+                int proposal = msg.getContent().split(";").length;
                 if (proposal < bestProposal) {
                     bestProposal = proposal;
                     bestProposer = msg.getSender();
@@ -215,6 +229,13 @@ public class DedaleContractNetInitiator extends DedaleInitiator {
     }
 
     protected void handleAllResultNotifications(Vector<? extends ACLMessage> ignoredResultNotifications) {
+        Treasure t = new Treasure(ignoredResultNotifications.get(0).getContent());
+        for (Treasure treasure : this.myMap.getTreasures()) {
+            if (treasure.getId().equals(t.getId())) {
+                treasure.setState(State.UNLOCKED);
+                break;
+            }
+        }
     }
 
     protected void reinit() {

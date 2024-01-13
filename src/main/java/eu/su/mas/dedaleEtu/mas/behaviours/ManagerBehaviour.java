@@ -7,6 +7,7 @@ import java.util.Map;
 import eu.su.mas.dedale.env.Location;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
 import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
 import eu.su.mas.dedaleEtu.mas.protocols.DedaleContractNetInitiator;
 import jade.core.AID;
@@ -33,7 +34,7 @@ public class ManagerBehaviour extends TickerBehaviour{
 	 *  
 	 */
 	public ManagerBehaviour (final Agent myagent, MapRepresentation myMap) {
-		super(myagent, 3000);
+		super(myagent, 10000);
 		this.myMap=myMap;
 	}
 
@@ -48,6 +49,7 @@ public class ManagerBehaviour extends TickerBehaviour{
 
 		for (Treasure treasure : unlockedTreasures) {
 			if (!unlockedTreasures.isEmpty()) {
+				treasure.setState(State.COVERED);
 				String[] responders = {"c1", "c2", "c3", "c4"};
 				
 				// Fill the CFP message
@@ -59,10 +61,16 @@ public class ManagerBehaviour extends TickerBehaviour{
 				cfp.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
 				cfp.setContent(treasure.toString());
 				
-				this.myAgent.addBehaviour(new DedaleContractNetInitiator(this.myAgent, cfp));
+				this.myAgent.addBehaviour(new DedaleContractNetInitiator(this.myAgent, cfp, this.myMap));
+				treasure.setState(State.COVERED);
 			}
 			break;
 		}
-
+		List<Treasure> treasures = this.myMap.getTreasures();
+		String states = "Treasures:";
+		for (Treasure treasure : treasures) {
+			states += ("\n\t"+treasure.toString());
+		}
+		System.out.println(states);
 	}
 }

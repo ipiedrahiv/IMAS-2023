@@ -44,8 +44,10 @@ public class MessageManagingBehaviour extends TickerBehaviour{
 
         if (msg != null) {
             if(msg.getProtocol().equals("UpdateTreasure")) {
+                // Update the treasure state to unlocked
                 String treasureId = msg.getContent();
                 this.myMap.updateTreasure(treasureId);
+
             }else if(msg.getProtocol().equals("GetPathToTreasure")) {
                 String content = msg.getContent();
                 String[] ids = content.split(";");
@@ -59,8 +61,15 @@ public class MessageManagingBehaviour extends TickerBehaviour{
                     Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
                     if (myPosition!=null && myPosition.getLocationId()!=""){
-                        reply.setContent(String.join(";", path));
-                        reply.addReceiver(new AID(reply.getSender().getLocalName(), AID.ISLOCALNAME));
+                        if(path != null) {
+                            reply.setContent(String.join(";", path));
+                        }else{
+                            reply.setContent(null);
+                        }
+                        
+                        reply.addReceiver(new AID(msg.getSender().getLocalName(), AID.ISLOCALNAME));
+                        reply.setConversationId(msg.getConversationId());
+                        // System.out.println("Agent "+this.myAgent.getLocalName()+ " sent path to treasure to "+msg.getSender().getLocalName());
                         ((AbstractDedaleAgent)this.myAgent).sendMessage(reply);
                     }
                 }else {

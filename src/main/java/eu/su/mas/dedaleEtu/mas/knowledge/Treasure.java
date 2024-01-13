@@ -25,7 +25,6 @@ public class Treasure implements Serializable {
 
     public Treasure(String treasure) {
         String[] treasureSplit = treasure.split(";");
-        System.out.println(treasure);
         this.id = treasureSplit[0];
 
         if (treasureSplit[1].equals("Gold")) {

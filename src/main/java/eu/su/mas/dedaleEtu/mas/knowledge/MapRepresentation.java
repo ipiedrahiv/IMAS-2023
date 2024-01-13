@@ -215,8 +215,9 @@ public class MapRepresentation implements Serializable {
 
 		Dijkstra dijkstra = new Dijkstra();//number of edge
 		dijkstra.init(g);
-		System.out.println(idFrom);
-		System.out.println(g.getNode(idFrom));
+		if(g.getNode(idFrom)==null) {
+			return null;
+		}
 		dijkstra.setSource(g.getNode(idFrom));
 		dijkstra.compute();//compute the distance to all nodes from idFrom
 		List<Node> path=dijkstra.getPath(g.getNode(idTo)).getNodePath(); //the shortest path from idFrom to idTo
@@ -385,7 +386,7 @@ public class MapRepresentation implements Serializable {
 	 * 
 	 * @return true if there exist at least one openNode on the graph 
 	 */
-	public boolean hasOpenNode() {
+	public synchronized boolean hasOpenNode() {
 		return (this.g.nodes()
 				.filter(n -> n.getAttribute("ui.class")==MapAttribute.open.toString())
 				.findAny()).isPresent();

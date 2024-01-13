@@ -58,6 +58,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	private MapRepresentation myMap;
 
 	private List<String> list_agentNames;
+	private int count = 0;
 
 /**
  * 
@@ -91,7 +92,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(500);
+				this.myAgent.doWait(200);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -118,35 +119,32 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 			//3) while openNodes is not empty, continues.
 			if(!explored) {
-				if (!this.myMap.hasOpenNode()){
-					//Explo finished
-					explored=true;
-					System.out.println(this.myAgent.getLocalName()+" - Exploration completed succesfully.");
-				}else{
-					//4) select next move.
-					//4.1 If there exist one open node directly reachable, go for it,
-					//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
-					if (nextNodeId==null){
-						//no directly accessible openNode
-						//chose one, compute the path and take the first step.
-						try {
-							nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);
-						}catch(Exception e) {
-							System.out.println(this.myAgent.getLocalName()+" - **************** No path to open node found ***************");
-							Random r= new Random();
-							int moveId;
-							moveId = 1 + r.nextInt(lobs.size()-1);
-							((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+				if(count > 0) {
+					moveRandom(myPosition);
+				}else {
+					if (!this.myMap.hasOpenNode()){
+						//Explo finished
+						explored=true;
+						System.out.println(this.myAgent.getLocalName()+" - Exploration completed succesfully.");
+					}else{
+						//4) select next move.
+						//4.1 If there exist one open node directly reachable, go for it,
+						//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
+						if (nextNodeId==null){
+							//no directly accessible openNode
+							//chose one, compute the path and take the first step.
+							try {
+								nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);
+								if(!((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId))) {
+									count += 3;
+								}
+							}catch(Exception e) {
+								moveRandom(myPosition);
+							}
+						}else {
+							//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 						}
-						//getShortestPath(myPosition,this.openNodes.get(0)).get(0);
-						//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
-					}else {
-						//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
-					}
-	
-					if(!((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId))) {
-						moveRandom(myPosition);
-					}
+					}		
 				}
 			}else {
 				if(!moveTowardsTreasure(myPosition)) {
@@ -155,6 +153,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					unlockTreasure(myPosition, lobs);
 				}
 			}
+			count -= 1;
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public enum State implements Serializable {
    LOCKED("Locked"),
    UNLOCKED("Unlocked"),
+   COVERED("Covered"),
    COLLECTED("Collected");
 
    private String name;

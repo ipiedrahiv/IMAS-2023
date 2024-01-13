@@ -72,7 +72,8 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 			@Override
 			protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
-				System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is reach treasure: "+cfp.getContent());
+				onMission = true;
+				System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getLocalName()+". Action is reach treasure: "+cfp.getContent());
 
 				// Retrieve treasure from message
 				Treasure t = new Treasure(cfp.getContent());
@@ -80,74 +81,74 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				// Check if the treasure is the same type as the agent
 				if (((AbstractDedaleAgent) this.getAgent()).getMyTreasureType().equals(t.getType())) {
 
-					// Evaluate the action (get length of path to treasure)
+					// Evaluate the action
 					List<String> path = evaluateAction(t);
 
 					if(path != null) {
-						// Obtain the length of the path
-						int pathLen = path.size();
-						System.out.println("Agent "+getLocalName()+": Proposing "+pathLen);
-
-						// Send the length of the path as a proposal
 						ACLMessage propose = cfp.createReply();
 						propose.setPerformative(ACLMessage.PROPOSE);
-						propose.setContent(String.valueOf(pathLen));
+						propose.setContent(String.join(";", path));
 						return propose;
 					}else{
-						System.out.println("Agent "+getLocalName()+": Refuse");
+						onMission = false;
 						throw new RefuseException("evaluation-failed");
 					}
 				}else {
-					System.out.println("Agent "+getLocalName()+": Refuse");
+					onMission = false;
 					throw new RefuseException("evaluation-failed");
 				}
 			}
 
 			@Override
-			protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose,ACLMessage accept) throws FailureException {
+			protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
 				System.out.println("Agent "+getLocalName()+": Proposal accepted");
-				Treasure t = new Treasure(cfp.getContent());
-
 				// Perform the action (move to treasure)
-				if (performAction(evaluateAction(t))) {
+				if (performAction(Arrays.asList(propose.getContent().split(";")))) {
 					System.out.println("Agent "+getLocalName()+": Action successfully performed");
 					ACLMessage inform = accept.createReply();
 					inform.setPerformative(ACLMessage.INFORM);
+					inform.setContent(cfp.getContent());
+					onMission = false;
 					return inform;
 				}else {
 					System.out.println("Agent "+getLocalName()+": Action execution failed");
-					throw new FailureException("unexpected-error");
-				}	
+					onMission = false;
+					throw new FailureException(cfp.getContent());
+				}
 			}
 
 			protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
 				System.out.println("Agent "+getLocalName()+": Proposal rejected");
+				onMission = false;
 			}
 		} );
 	}
 
 	private Boolean performAction(List<String> path) {
-		this.onMission = true;
 		// Get observable nodes
-		while(path.size() > 0) {
+		for(String node : path) {
 			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this).observe();
-			// Retrieve location from the list of observations whose id matches the first node in the path
 			Location nextNode = null;
 			for(Couple<Location, List<Couple<Observation,Integer>>> c: lobs) {
-				if(c.getLeft().getLocationId().equals(path.get(0))) {
+				if(c.getLeft().getLocationId().equals(node)) {
 					nextNode = c.getLeft();
 				}
 			}
 			if (nextNode != null) {
-				// Move to the next node
-				((AbstractDedaleAgent)this).moveTo(nextNode);
-				path.remove(0);
+				while(!((AbstractDedaleAgent)this).moveTo(nextNode)) {
+					doWait(100);
+				}
+				System.out.println(this.getLocalName()+" - Moving to "+nextNode.getLocationId());
+				doWait(200);
 			}else {
-				this.onMission = false;
+				for(Couple<Location, List<Couple<Observation,Integer>>> c: lobs) {
+					if(c.getLeft().getLocationId().equals(node)) {
+						nextNode = c.getLeft();
+					}
+				}
 				return false;
-			}
+			}		
 		}
-		this.onMission = false;
 		return true;
 	}
 
@@ -159,6 +160,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		msg.setProtocol("GetPathToTreasure");
 
 		Location myPosition=((AbstractDedaleAgent)this).getCurrentPosition();
+		String conversationId = "GetPathToTreasure-" + System.currentTimeMillis();
 
 		if (myPosition!=null && myPosition.getLocationId()!=""){
 			msg.setContent(myPosition.getLocationId()+";"+t.getId());
@@ -172,11 +174,18 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 			// msg.addReceiver(new AID("m4",AID.ISLOCALNAME));
 			// msg.addReceiver(new AID("m5",AID.ISLOCALNAME));									
 
+			// Set the conversation ID of the request
+			msg.setConversationId(conversationId);
 			((AbstractDedaleAgent)this).sendMessage(msg);
 		}
 
-		ACLMessage pathMsg = this.blockingReceive(MessageTemplate.MatchProtocol("PathToTreasure"));
-		if(pathMsg != null) {
+		System.out.println(this.getLocalName()+" - Waiting for path to treasure "+t.getId());
+		ACLMessage pathMsg = this.blockingReceive(MessageTemplate.MatchConversationId(conversationId));
+		
+		System.out.println(this.getLocalName()+" - Received path to treasure "+t.getId());
+		if(pathMsg == null){
+			System.out.println(this.getLocalName()+" - Path to treasure is null");
+		}else if(pathMsg.getProtocol().equals("PathToTreasure")) {
 			String path = pathMsg.getContent();
 			if(path != null) {
 				String[] pathArray = path.split(";");
@@ -224,7 +233,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		private Location prevLoc = null;
 
 		public SemiRandomWalkExchangeBehaviour (final AbstractDedaleAgent myagent) {
-			super(myagent, 500);
+			super(myagent, 200);
 			//super(myagent);
 		}
 
@@ -239,6 +248,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 				//example related to the use of the backpack for the treasure hunt
 				Boolean b=false;
+				Boolean collected = true;
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
@@ -251,9 +261,11 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 									System.out.println(this.myAgent.getLocalName()+" - Grabbed "+amount+" "+o.getLeft()+" from a total of "+o.getRight()+" at "+myPosition.getLocationId());
 									System.out.println(this.myAgent.getLocalName()+" - My current backpack free space is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 									b=true;
+									collected = false;
 								}
 
 								if(amount == o.getRight()) {
+									collected = true;
 									System.out.println(this.myAgent.getLocalName()+" - Treasure collected completely");
 									ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
 			
@@ -301,17 +313,18 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				}
 
 				//Only move if the treasure has been collected completely
-				int moveId;
-				if(prevLoc == null) {
+				if(!onMission && collected) {
+					int moveId;
+					if(prevLoc == null) {
+						prevLoc = myPosition;
+					}
+					do{
+						Random r= new Random();
+						moveId = 1 + r.nextInt(lobs.size()-1);
+					}while(lobs.get(moveId).getLeft().equals(prevLoc) && prevLoc != null);
 					prevLoc = myPosition;
+					((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 				}
-				do{
-					Random r= new Random();
-					moveId = 1 + r.nextInt(lobs.size()-1);
-				}while(lobs.get(moveId).getLeft().equals(prevLoc) && prevLoc != null);
-				prevLoc = myPosition;
-
-				((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 			}
 		}
 	}
