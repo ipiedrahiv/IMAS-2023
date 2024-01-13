@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>reveal.js</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/solarized.css">
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/monokai.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<style>
+  .fragment.blur {
+    filter: blur(5px);
+  }
+
+  .fragment.blur.visible {
+    filter: none;
+  }
+
+  .items {
+    font-size: 20px;
+  }
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bullets1 {
+    flex: 1;
+    padding-right: 20px;
+    /* Adjust the spacing between bullets and image as needed */
+  }
+
+  .image1 {
+    flex: 1;
+    text-align: right;
+  }
+
+  .bullets2 {
+    flex: 1;
+    padding-right: 20px;
+    /* Adjust the spacing between bullets and image as needed */
+  }
+
+  .image2 {
+    flex: 1;
+    text-align: left;
+  }
+
+  .left {
+    float: left;
+    width: 50%;
+    /* Adjust width as needed */
+  }
+
+  .right {
+    float: right;
+    width: 50%;
+    /* Adjust width as needed */
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  table {
+    /* Adjust table width as needed */
+    border-collapse: collapse;
+    font-size: 20px;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+
+  }
+
+
+  th.column1 {
+    width: 20%;
+    /* Set the width of the first column */
+  }
+
+  th.column2 {
+    width: 30%;
+    /* Set the width of the second column */
+  }
+
+  /* Apply the same widths to corresponding table data cells */
+  td.column1,
+  th.column1 {
+    width: 20%;
+  }
+
+  td.column2,
+  th.column2 {
+    width: 30%;
+  }
+</style>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <!-- Cover -->
+      <section>
+        <h1 class="fragment" style="color: #79b6c9;">TREASURE HUNT PROBLEM</h1>
+        <h3 class="fragment">Introduction to Multi-Agent Systems</h3>
+        <h4 class="fragment">Master in Artificial Intelligence</h4>
+        <p class="fragment" style="font-size: 20px;">Martín Suárez | Isabel Priedrahita | Mario Rosas | Laura Roldan |
+          Alam López</p>
+      </section>
+
+      <!-- Slide 1 -->
+      <section>
+        <div class="content">
+          <div class="bullets1">
+            <h2>Problem description</h2>
+            <ul>
+              <li class="fragment fade-up items" align="justify">Implementation of a treasure hunt simulation with the
+                goal of optimizing treasure exploration and collection.</li>
+              <li class="fragment fade-up items" align="justify">Inclusion of various agent types, coordination
+                mechanisms, communication protocols, and cooperation strategies.</li>
+              <li class="fragment fade-up items" align="justify">Utilization of an undirected graph as the world map.
+              </li>
+              <li class="fragment fade-up items" align="justify">Evaluation of time and step requirements for task
+                completion.</li>
+            </ul>
+          </div>
+          <div class="image1">
+            <img src="./assets/gsHunt.png" alt="Italian Trulli">
+            <!-- <p>Source: Dedale project (https://dedale.gitlab.io/page/dedale/presentation/)</p> -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 2 -->
+      <section>
+        <div class="content">
+          <div class="image2">
+            <img src="./assets/maps.png" alt="Italian Trulli">
+            <!-- <p>Source: Dedale project (https://dedale.gitlab.io/page/dedale/presentation/)</p> -->
+          </div>
+          <div class="bullets2">
+            <h2>General Analysis</h2>
+            <ul>
+              <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Environment
+                Characteristics</li>
+              <div class="fragment custom blur">
+                <ul>
+                  <li class="items" align="justify">Fully vs Partially observable</li>
+                  <li class="items" align="justify">Deterministic</li>
+                  <li class="items" align="justify">Dynamic</li>
+                  <li class="items" align="justify">Discrete</li>
+                  <li class="items" align="justify">Non-episodic</li>
+                </ul>
+              </div>
+              <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Metrics</li>
+              <div class="fragment custom blur">
+                <ul>
+                  <li class="items" align="justify">Total collected goal</li>
+                  <li class="items" align="justify">Total collected diamonds</li>
+                  <li class="items" align="justify">Total moves required per agent</li>
+                </ul>
+              </div>
+              <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">The map</li>
+              <div class="fragment custom blur">
+                <ul>
+                  <li class="items" align="justify">579 Nodes</li>
+                  <li class="items" align="justify">Based on León</li>
+                  <li class="items" align="justify">Undirected, biconnected graph</li>
+                  <li class="items" align="justify">Treasure placement definition</li>
+                </ul>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3 -->
+      <section>
+        <div class="content">
+          <div class="bullets1">
+            <h2 style="font-size: 60px;">General System Architecture</h2>
+          </div>
+          <div class="image1">
+            <ul>
+              <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Architecture
+                Characteristics</li>
+              <ul>
+                <li class="fragment items" align="justify">Hierarchical</li>
+                <li class="fragment items" align="justify">Efficient task distribution and coordination</li>
+                <li class="fragment items" align="justify">Multi-level control</li>
+                <li class="fragment items" align="justify">Overall statistical measures</li>
+                <li class="fragment items" align="justify">Focus and Adaptability</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+        <img src="./assets/architecture.png" alt="Italian Trulli" style="width: 700px;">
+      </section>
+
+      <!-- Slide 4 -->
+      <section>
+        <h2>Problem Decomposition</h2>
+        <div class="content">
+          <div class="bullets1">
+            <ul>
+              <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Map Exploration</li>
+              <img class="fragment custom blur" src="./assets/mapExploration.png" alt="Italian Trulli"
+                style="height: 200px;">
+              <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Deadlock Management
+              </li> <br>
+              <img class="fragment custom blur" src="./assets/deadlock.png" alt="Italian Trulli" style="width: 450px;">
+            </ul>
+          </div>
+          <div class="image1">
+            <ul>
+              <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Treasure collection
+              </li>
+              <img class="fragment custom blur" src="./assets/treasureLocation.png" alt="Italian Trulli"
+                style="height: 200px;">
+              <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Communication and
+                Information Sharing</li>
+              <li class="items" align="justify" style="font-weight: bold; color: #79b6c9;">Basic Behaviours and
+                Dynamic Task Allocation</li>
+              <img class="fragment custom blur" src="./assets/communication.png" alt="Italian Trulli"
+                style="width: 200px;">
+            </ul>
+          </div>
+        </div>
+        <!-- <img src="./assets/architecture.png" alt="Italian Trulli" style="width: 700px;"> -->
+      </section>
+
+      <!-- Slide 5 -->
+      <section>
+        <div class="content">
+          <div class="bullets1">
+            <h2>Task Sharing</h2> <br>
+            <img class="fragment fade-up" src="./assets/ContractN.png" alt="Italian Trulli" style="width: 400px;">
+          </div>
+          <div class="fragment right">
+            <h4 style="color: #5697ac;">Contract Net</h4>
+            <a style="font-size: 20px;">Managers - Coordinators</a> <br>
+            <a style="font-size: 20px;">Contractors - Low-level agents</a> <br>
+            <!-- Table starts here -->
+            <table
+              style="width:135%; max-width: 135%; table-layout: fixed; border: 1px solid black; border-collapse: collapse;">
+              <tr>
+                <th style="border: 1px solid black; width: 25%;">Contract</th>
+                <th style="border: 1px solid black; width: 25%;">Contractors</th>
+                <th style="border: 1px solid black;">Cost function</th>
+              </tr>
+              <tr>
+                <td style="border: 1px solid black; word-wrap: break-word;">Safe opening</td>
+                <td style="border: 1px solid black;"><img src="assets/exp_col.png" alt="Contractor 1"
+                    style="width:100%; max-width:100px; max-height:100px;" /></td>
+                <td style="border: 1px solid black;">
+                  <div style="font-size: smaller;">
+                    \(C = d + a\left(\frac{p_a - p}{p_a}\right) + b\left(\frac{s - s_a}{s_a}\right)\)
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid black; word-wrap: break-word;">Treasure collection</td>
+                <td style="border: 1px solid black;"><img src="assets/col_tank.png" alt="Contractor 2"
+                    style="width:100%; max-width:100px; max-height:100px;" /></td>
+                <td style="border: 1px solid black;">
+                  <div style="overflow-x:auto; font-size: smaller;">
+                    \(C = d\)
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <!-- Table ends here -->
+          </div>
+        </div>
+      </section>
+
+<!-- Slide 6 -->
+      <section>
+        <div class="content">
+          <div class="bullets1">
+            <br>
+            <h2>Task Sharing</h2>
+            <h3 style="color: #5697ac;">Broadcasting contracts</h3>
+          </div>
+          <div class="fragment right" style="width: 100%;">
+            <img class="fragment" src="./assets/coordination.png" alt="Italian Trulli"
+                style="width: 500%;">
+            <!-- Table ends here -->
+          </div>
+        </div>
+      </section>
+
+ <!-- Slide 7 -->
+      <section>
+        <div class="content">
+          <div class="image2">
+            <h2>Results Sharing</h2>
+            <h3 style="color: #5697ac; font-size: 40px;">Blackboard</h3>
+            <img src="./assets/blackboard.png" alt="Italian Trulli">
+            <!-- <p>Source: Dedale project (https://dedale.gitlab.io/page/dedale/presentation/)</p> -->
+          </div>
+          <div class="bullets2">
+            <br><br><br>
+            <ul>
+              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress og the map and treasures</li>
+              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different access levels accordinf to the type of agent</li>
+              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Treasure states:</li>
+              <div class="fragment custom blur">
+                <ul>
+                  <li class="items" align="justify">Not Found</li>
+                  <li class="items" align="justify">Discovered</li>
+                  <li class="items" align="justify">Searching</li>
+                  <li class="items" align="justify">Collected</li>
+                  <li class="items" align="justify">Stores</li>
+                </ul>
+              </div>
+                          </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Problem description</h2>
+
+        <p class="fragment">Fade in</p>
+        <p class="fragment fade-out">Fade out</p>
+        <p class="fragment highlight-red">Highlight red</p>
+        <p class="fragment fade-in-then-out">Fade in, then out</p>
+        <p class="fragment fade-up">Slide up while fading in</p>
+      </section>
+
+      <section>
+        <p class="fragment custom blur">One</p>
+        <p class="fragment custom blur">Two</p>
+        <p class="fragment custom blur">Three</p>
+      </section>
+      <!-- <section>Slide 2</section> -->
+    </div>
+  </div>
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>
