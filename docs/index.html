@@ -53,6 +53,20 @@
         </div>
       </section>
 
+
+      <!-- ------------- Slide 1 ------------------ -->
+      <section>
+        <h2>Resources & Roadmap</h2>
+        <div class="fragment fade-left">
+          <h3 style="color: #5697ac; font-size: 40px">Management and Coding Tools</h3>
+          <img src="./assets/resources.png" alt="Italian Trulli" style="height: 230px;">
+        </div>
+        <div class="fragment fade-right">
+          <h3 style="color: #5697ac; font-size: 40px;">Solution Approach Roadmap</h3>
+          <img src="./assets/roadmap.png" alt="Italian Trulli" style="width: 2000px; height: 130px;">
+        </div>
+      </section>
+
       <!-- ------------- Slide 2 ------------------ -->
       <section>
         <div class="content">
@@ -67,7 +81,7 @@
                 Characteristics</li>
               <div class="fragment custom blur">
                 <ul>
-                  <li class="items" align="justify">Fully vs Partially observable</li>
+                  <li class="items" align="justify">Partially/Fully observable</li>
                   <li class="items" align="justify">Deterministic</li>
                   <li class="items" align="justify">Dynamic</li>
                   <li class="items" align="justify">Discrete</li>
@@ -85,8 +99,8 @@
               <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">The map</li>
               <div class="fragment custom blur">
                 <ul>
-                  <li class="items" align="justify">579 Nodes</li>
-                  <li class="items" align="justify">Based on León</li>
+                  <li class="items" align="justify">547 Nodes</li>
+                  <li class="items" align="justify">Based on León, Spain</li>
                   <li class="items" align="justify">Undirected, biconnected graph</li>
                   <li class="items" align="justify">Treasure placement definition</li>
                 </ul>
@@ -117,6 +131,236 @@
           </div>
         </div>
         <img src="./assets/architecture.png" alt="Italian Trulli" style="width: 700px;">
+      </section>
+
+      <!-- ------------- Slide 3 ------------------ -->
+      <section>
+        <section>
+          <h2 style="font-size: 60px;">Agents Definition</h2>
+          <div class="content fade-right">
+          <div class="content fade-out">
+            <div class="left">
+              <h3 style="color: #5697ac; font-size: 40px">Coordinator</h3>
+              <img src="./assets/Manager.png" alt="Italian Trulli" style="width: auto; height: 350px;">
+            </div>
+            <div class="right">
+              <ul>
+                <li align="justify" style="font-weight: bold; color: #5697ac; font-size: 30px;">Responsabilities</li>
+                <ul>
+                  <li class="items" align="justify">Focus on long-term global objectives</li>
+                  <li class="items" align="justify">Keep track of th environment state</li>
+                  <li class="items" align="justify">Maintain statistics</li>
+                  <li class="items" align="justify">Facilitate comunication between agents</li>
+                  <li class="items" align="justify">Mobilizing the agents to treasure spots when necesary</li>
+                </ul>
+              </ul>
+              <br>
+              <table style="border-collapse: collapse; width: 100%;">
+                <caption style="font-weight: bold; color: #5697ac; font-size: 25px;">Coordinator agents properties
+                </caption>
+                <tr>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Agent</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Gold Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Diamond Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Detection Radius</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Lock picking</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Strength</th>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Coordinator</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">100</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                </tr>
+              </table>
+            </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 style="font-size: 60px;">Agents Definition</h2>
+          <div class="content fade-right">
+          <div class="content fade-out">
+            <div class="left">
+              <h3 style="color: #5697ac; font-size: 40px">Explorer</h3>
+              <img src="./assets/explorer.png" alt="Italian Trulli" style="width: auto; height: 300px;">
+            </div>
+            <div class="right">
+              <ul>
+                <li align="justify" style="font-weight: bold; color: #5697ac; font-size: 30px;">Characteristics</li>
+                <ul>
+                  <li class="items" align="justify">Systematically explore the unknown terrain</li>
+                  <li class="items" align="justify">Construct a comprehensive map of the environment</li>
+                  <li class="items" align="justify">Cominicate environment updates while exploring</li>
+                  <li class="items" align="justify">Lockpiking and Strenght, no carrying capacity</li>
+                </ul>
+              </ul>
+              <br>
+              <table style="border-collapse: collapse; width: 100%;">
+                <caption style="font-weight: bold; color: #5697ac; font-size: 25px;">Coordinator agents properties
+                </caption>
+                <tr>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Agent</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Gold Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Diamond Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Detection Radius</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Lock picking</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Strength</th>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Explorer1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">2</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">3</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Explorer2</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">3</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">2</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Explorer3</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">3</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">2</td>
+                </tr>
+              </table>
+            </div>
+            </div>
+          </div>
+        </section>
+
+<section>
+          <h2 style="font-size: 60px;">Agents Definition</h2>
+          <div class="content fade-right">
+          <div class="content fade-out">
+            <div class="left">
+              <h3 style="color: #5697ac; font-size: 40px">Collector</h3>
+              <img src="./assets/collector.png" alt="Italian Trulli" style="width: auto; height: 300px;">
+            </div>
+            <div class="right">
+              <ul>
+                <li align="justify" style="font-weight: bold; color: #5697ac; font-size: 30px;">Responsabilities</li>
+                <ul>
+                  <li class="items" align="justify">Transport treasure to tankers</li>
+                  <li class="items" align="justify">Limited carrying capacity of either gold or diamonds</li>
+                  <li class="items" align="justify">Moderate lockpicking & strength</li>
+                  <li class="items" align="justify">Help coordinators, travel to treasure spots</li>
+                  <li class="items" align="justify">Update about environment status</li>
+                </ul>
+              </ul>
+              <br>
+              <table style="border-collapse: collapse; width: 100%;">
+                <caption style="font-weight: bold; color: #5697ac; font-size: 25px;">Coordinator agents properties
+                </caption>
+                <tr>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Agent</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Gold Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Diamond Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Detection Radius</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Lock picking</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Strength</th>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Collector1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">50</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Colector2</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">50</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Collector3</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">50</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                </tr>
+<tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Collector4</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">-1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">50</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">1</td>
+                </tr>
+              </table>
+            </div>
+            </div>
+          </div>
+        </section>
+
+<section>
+          <h2 style="font-size: 60px;">Agents Definition</h2>
+          <div class="content fade-right">
+          <div class="content fade-out">
+            <div class="left">
+              <h3 style="color: #5697ac; font-size: 40px">Tanker</h3>
+              <img src="./assets/tanker.png" alt="Italian Trulli" style="width: auto; height: 300px;">
+            </div>
+            <div class="right">
+              <ul>
+                <li align="justify" style="font-weight: bold; color: #5697ac; font-size: 30px;">Responsabilities</li>
+                <ul>
+                  <li class="items" align="justify">Store the collected treasure</li>
+                  <li class="items" align="justify">High carrying capacity of gold and diamond</li>
+                  <li class="items" align="justify">Move freely around the map</li>
+                  <li class="items" align="justify">Attend a storage treasure request</li>
+                </ul>
+              </ul>
+              <br>
+              <table style="border-collapse: collapse; width: 100%;">
+                <caption style="font-weight: bold; color: #5697ac; font-size: 25px;">Coordinator agents properties
+                </caption>
+                <tr>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Agent</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Gold Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Diamond Cap.</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Detection Radius</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Lock picking</th>
+                  <th style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Strength</th>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Tanker1</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">400</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">400</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">Tanker2</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">400</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">400</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                  <td style="border-bottom: 1px solid black; padding: 8px; text-align: center;">0</td>
+                </tr>
+                              </table>
+            </div>
+            </div>
+          </div>
+        </section>
+
       </section>
 
       <!-- ------------- Slide 4 ------------------ -->
@@ -213,71 +457,72 @@
       </section>
 
       <section>
-      <!-- ------------- Slide 7 ------------------ -->
-      <section>
-        <div class="content">
-          <div class="right">
-            <h2>Results Sharing</h2>
-            <h3 style="color: #5697ac; font-size: 40px;">Blackboard</h3>
-            <img src="./assets/blackboard.png" alt="Italian Trulli">
+        <!-- ------------- Slide 7 ------------------ -->
+        <section>
+          <div class="content">
+            <div class="right">
+              <h2>Results Sharing</h2>
+              <h3 style="color: #5697ac; font-size: 40px;">Blackboard</h3>
+              <img src="./assets/blackboard.png" alt="Italian Trulli">
+            </div>
+            <div class="left">
+              <br><br><br>
+              <ul>
+                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress
+                  og
+                  the map and treasures</li>
+                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different
+                  access levels accordinf to the type of agent</li>
+                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Treasure states:</li>
+                <div class="fragment custom blur">
+                  <ul>
+                    <li class="items" align="justify">Not Found</li>
+                    <li class="items" align="justify">Discovered</li>
+                    <li class="items" align="justify">Searching</li>
+                    <li class="items" align="justify">Collected</li>
+                    <li class="items" align="justify">Stores</li>
+                  </ul>
+                </div>
+              </ul>
+            </div>
           </div>
-          <div class="left">
-            <br><br><br>
-            <ul>
-              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress og
-                the map and treasures</li>
-              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different
-                access levels accordinf to the type of agent</li>
-              <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Treasure states:</li>
-              <div class="fragment custom blur">
-                <ul>
-                  <li class="items" align="justify">Not Found</li>
-                  <li class="items" align="justify">Discovered</li>
-                  <li class="items" align="justify">Searching</li>
-                  <li class="items" align="justify">Collected</li>
-                  <li class="items" align="justify">Stores</li>
-                </ul>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- ------------- Slide 8 ------------------ -->
-      <section>
-        <h2>Results Sharing</h2>
-        <div class="content">
-          <div class="left">
-            <h3 style="color: #5697ac; font-size: 40px;">Publish/Subscribe</h3>
-            <ul>
-              <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Events:</li>
-              <div class="fragment custom blur">
-                <ul>
-                  <li class="items" align="justify">Explorer</li>
+        <!-- ------------- Slide 8 ------------------ -->
+        <section>
+          <h2>Results Sharing</h2>
+          <div class="content">
+            <div class="left">
+              <h3 style="color: #5697ac; font-size: 40px;">Publish/Subscribe</h3>
+              <ul>
+                <li class="fragment highlight-blue items" align="justify" style="font-weight: bold;">Events:</li>
+                <div class="fragment custom blur">
                   <ul>
-                    <li class="items" align="justify">Explorer finds a treasure</li>
-                    <li class="items" align="justify">Explorer opens a treasure</li>
+                    <li class="items" align="justify">Explorer</li>
+                    <ul>
+                      <li class="items" align="justify">Explorer finds a treasure</li>
+                      <li class="items" align="justify">Explorer opens a treasure</li>
+                    </ul>
+                    <li class="items" align="justify">Collector</li>
+                    <ul>
+                      <li class="items" align="justify">Collector finds a treasure</li>
+                      <li class="items" align="justify">Collector opens a treasure</li>
+                      <li class="items" align="justify">Collector collects a treasure</li>
+                    </ul>
+                    <li class="items" align="justify">Tanker</li>
+                    <ul>
+                      <li class="items" align="justify">Tanker stores a treasure</li>
+                    </ul>
                   </ul>
-                  <li class="items" align="justify">Collector</li>
-                  <ul>
-                    <li class="items" align="justify">Collector finds a treasure</li>
-                    <li class="items" align="justify">Collector opens a treasure</li>
-                    <li class="items" align="justify">Collector collects a treasure</li>
-                  </ul>
-                  <li class="items" align="justify">Tanker</li>
-                  <ul>
-                    <li class="items" align="justify">Tanker stores a treasure</li>
-                  </ul>
-                </ul>
-              </div>
-            </ul>
+                </div>
+              </ul>
+            </div>
+            <div class="right">
+              <br>
+              <img src="./assets/subscribe.png" alt="Italian Trulli">
+            </div>
           </div>
-          <div class="right">
-            <br>
-            <img src="./assets/subscribe.png" alt="Italian Trulli">
-          </div>
-        </div>
-      </section>
+        </section>
       </section>
 
 
