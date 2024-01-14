@@ -10,6 +10,10 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import jade.core.behaviours.TickerBehaviour;
 
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
+
 /**************************************
  * 
  * 
@@ -26,13 +30,24 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 	private static final long serialVersionUID = 9088209402507795289L;
 	private Location prevLoc = null;
 
-	public SemiRandomWalkBehaviour (final AbstractDedaleAgent myagent) {
+	private MapRepresentation myMap;
+
+	private int semiRandomMoves = 0;
+
+
+	private boolean done = true;
+
+	private boolean reported = false;
+
+	public SemiRandomWalkBehaviour (final AbstractDedaleAgent myagent, MapRepresentation myMap) {
 		super(myagent, 200);
+		this.myMap = myMap;
 		//super(myagent);
 	}
 
 	@Override
 	public void onTick() {
+		semiRandomMoves += 1;
 		//Example to retrieve the current position
 		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
@@ -55,6 +70,32 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 
 			//The move action (if any) should be the last action of your behaviour
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+		}
+
+		if(this.myMap==null) {
+			this.myMap= MapRepresentation.getInstance();
+		}
+
+		done = true;
+
+		List<Treasure> allTreasures = this.myMap.getTreasures();
+
+		if(allTreasures.size() == 1) {
+			for (Treasure treasure : allTreasures) {
+				done = done && ((treasure.getState() == State.COLLECTED));
+			}
+		} else {
+			done = false;
+		}
+
+		if(done == true) {
+			if (reported == false) {
+				System.out.println("####################");
+				System.out.println("SEMIRANDOM-WALK BEHAVIOUR");
+				System.out.println("Intentional movements for agent " + myAgent.getName() + " = " + semiRandomMoves);
+				System.out.println("####################");
+				reported = true;
+			}
 		}
 
 	}

@@ -9,7 +9,12 @@ import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
 import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.SayHelloBehaviour;
 
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.behaviours.Behaviour;
+
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
 
 /**
  * This example class start a Dummy agent that will possess two behaviours :
@@ -23,7 +28,7 @@ import jade.core.behaviours.Behaviour;
 public class DummyMovingAgent extends AbstractDedaleAgent{
 
 	private static final long serialVersionUID = -2991562876411096907L;
-	
+	private MapRepresentation myMap;
 
 	/**
 	 * This method is automatically called when "agent".start() is executed.
@@ -48,7 +53,7 @@ public class DummyMovingAgent extends AbstractDedaleAgent{
 		 * ADD the inititial behaviours of the Dummy Moving Agent here
 		 * 
 		 ************************************************/
-		lb.add(new SemiRandomWalkBehaviour(this));
+		lb.add(new SemiRandomWalkBehaviour(this, myMap));
 		lb.add(new SayHelloBehaviour(this));
 		
 		
