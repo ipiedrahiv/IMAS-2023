@@ -6,6 +6,14 @@
     filter: none;
   }
 
+ .fragment.unblur {
+    filter: none;
+  }
+
+  .fragment.unblur.visible {
+    filter: blur(5px);
+  }
+
   .items {
     font-size: 20px;
   }

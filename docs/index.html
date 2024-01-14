@@ -460,27 +460,23 @@
         <!-- ------------- Slide 7 ------------------ -->
         <section>
           <div class="content">
-            <div class="right">
+            <div class="right" style="width: 45%;">
               <h2>Results Sharing</h2>
               <h3 style="color: #5697ac; font-size: 40px;">Blackboard</h3>
               <img src="./assets/blackboard.png" alt="Italian Trulli">
             </div>
-            <div class="left">
-              <br><br><br>
+            <div class="left" style="width: 55%;">
+              <br><br><br><br>
               <ul>
-                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress
-                  og
-                  the map and treasures</li>
-                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different
-                  access levels accordinf to the type of agent</li>
-                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Treasure states:</li>
+                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Current state of progress on the map and treasures</li>
+                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Global list with different access levels according to the type of agent</li>
+                <li class="fragment fade-up items" align="justify" style="font-weight: bold;">Treasure infro in the blackboard:</li>
                 <div class="fragment custom blur">
                   <ul>
-                    <li class="items" align="justify">Not Found</li>
-                    <li class="items" align="justify">Discovered</li>
-                    <li class="items" align="justify">Searching</li>
-                    <li class="items" align="justify">Collected</li>
-                    <li class="items" align="justify">Stores</li>
+                    <li class="items" align="justify"><b>id</b>: Node number containing the treasure</li>
+                    <li class="items" align="justify"><b>state</b>: Discovered|Searching|Collected|Stored</li>
+                    <li class="items" align="justify"><b>maxAmount</b>: Total amount of gold or diamoind in the treasure</li>
+                    <li class="items" align="justify"><b>type</b>: The treasure has gold or diamond</li>
                   </ul>
                 </div>
               </ul>
@@ -527,37 +523,254 @@
 
 
       <!-- ------------- Slide 8 ------------------ -->
-      <section>
-        <h2>Social Norms</h2>
-        <div class="content">
-          <div class="column fragment custom blur"
-            style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
-            <div class="latex" style="text-align: center;">
-              <div style="font-size: 15px;">
-                \( f(H) =
-                \begin{cases}
-                id_x & \text{if } busy_x > busy_y \\
-                id_y & \text{if } busy_x < busy_y \\ id_x & \text{if } type_x> type_y \text{ and } busy_x = busy_y \\
-                  id_y & \text{if } type_x < type_y \text{ and } busy_x=busy_y \\ id_x & \text{otherwise} \end{cases} \)
-                    </div>
-              </div>
-              <div class="image">
-                <img src="./assets/SN1.png" alt="Italian Trulli">
-              </div>
-            </div>
-            <div class="column fragment custom blur"
-              style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
-              <div class="image">
-                <img src="./assets/SN_tankers.png" alt="Italian Trulli">
-              </div>
-            </div>
-            <div class="column fragment custom blur"
-              style="flex-basis: 33%; display: flex; flex-direction: column; align-items: center;">
-              <div class="image">
-                <img src="./assets/SN3.png" alt="Italian Trulli">
-              </div>
-            </div>
+      
+<section>
+  <h2>Social Norms</h2>
+  <div class="content" style="display: flex; width: 100%; justify-content: space-around;">
+    <div class="column fragment custom blur" style="flex-basis: 25%; display: flex; flex-direction: column; align-items: center;">
+      <div class="column fragment custom unblur">
+      <div class="latex" style="text-align: center;">
+        <ul>
+          <li class="items" align="justify" style="font-size: 15px; color: #5697ac;">Deadlock Handling</li>
+          <div style="font-size: 10px;">
+            \( f(H) =
+            \begin{cases}
+            id_x & \text{if } busy_x > busy_y \\
+            id_y & \text{if } busy_x < busy_y \\ id_x & \text{if } type_x> type_y \text{ and } busy_x = busy_y \\
+              id_y & \text{if } type_x < type_y \text{ and } busy_x=busy_y \\ id_x & \text{otherwise} \end{cases} \)
           </div>
+        </ul>
+      </div>
+      <div class="image">
+        <img src="./assets/SN1.png" alt="Italian Trulli" style="width: 250px;">
+      </div>
+      </div>
+    </div>
+    <div class="column fragment custom blur" style="flex-basis: 25%; display: flex; flex-direction: column; align-items: center;">
+      <div class="column fragment custom unblur">
+      <ul>
+        <li class="items" align="justify" style="font-size: 15px; color: #5697ac;">Proactive Lock-Picking</li>
+        <div class="image">
+          <img src="./assets/SN3.png" alt="Italian Trulli">
+        </div>
+      </ul>
+      </div>
+    </div>
+    <div class="column fragment custom blur" style="flex-basis: 25%; display: flex; flex-direction: column; align-items: center;">
+      <div class="column fragment custom unblur">
+      <ul>
+        <li class="items" align="justify" style="font-size: 15px; color: #5697ac;">Send tanker to collector that needs it</li>
+        <div class="image">
+          <img src="./assets/SN_tankers.png" alt="Italian Trulli">
+        </div>
+      </ul>
+    </div>
+      </div>
+    <div class="column fragment custom blur" style="flex-basis: 25%; display: flex; flex-direction: column; align-items: center;">
+      <ul>
+        <li class="items" align="justify" style="font-size: 15px; color: #5697ac;">Explorer lockpicking after mapping</li>
+        <div class="image">
+          <br>
+          <img src="./assets/OpenTreasure.png" alt="Italian Trulli">
+        </div>
+      </ul>
+    </div>
+  </div>
+</section>
+<section>
+
+				<section data-auto-animate>
+					<h2 data-id="code-title">Agent Behaviours</h2>
+              <h3 style="color: #5697ac; font-size: 40px;">Explorer</h3>
+					<pre data-id="code-animation"><code class="hljs javascript" data-trim data-line-numbers="|1-4|9|20,21"><script type="text/template">
+            While exploration is not finished:
+              Get the current position of the agent.
+              Observe the surrounding nodes and their observations.
+              Mark the current node as closed in the map.
+
+              For each accessible node in the observation:
+                  If the node is new:
+                      Add the node to the map.
+                  Add the edge between the current node and the accessible node.
+                  If the accessible node is new and not the current node:
+                      Consider it as the next node to move to.
+              
+              If there are no more open nodes or the exploration is finished:
+                  Print a success message.
+                  Move randomly to another location.
+              Else:
+                  If there are open nodes:
+                      Select the next move:
+                      
+                      If there is a directly accessible open node:
+                          Move to it.
+                      Else:
+                          Choose one from the open node list, compute the shortest path, and move to the first step of the path.
+
+					</script></code></pre>
+				</section>
+
+				<section data-auto-animate>
+					<h2 data-id="code-title">Agent Behaviours</h2>
+              <h3 style="color: #5697ac; font-size: 40px;">Collector</h3>
+					<pre data-id="code-animation"><code class="hljs javascript" data-trim data-line-numbers="3,9,13,14"><script type="text/template">
+            Get the current position of the agent
+            If the current position is valid:
+                Observe the surroundings and get a list of observations at the current position (lobs)
+                For each observation in lobs:
+                    If the observation is a DIAMOND or GOLD:
+                        If the treasure type matches the agents treasure type:
+                            Attempt to open the lock associated with the observation (e.g., GOLD)
+                            If successful:
+                                Pick up the treasure
+                Try to store everything in the tanker
+                If successful:
+                    Print a message indicating stored treasure in the tanker
+                Choose a random move from the current position that is different from the previous one
+                Move to the selected location					
+        </script></code></pre>
+				</section>
+
+				<section data-auto-animate>
+					<h2 data-id="code-title">Agent Behaviours</h2>
+              <h3 style="color: #5697ac; font-size: 40px;">Tanker</h3>
+					<pre data-id="code-animation"><code class="hljs javascript" data-trim data-line-numbers="3-6"><script type="text/template">
+            While RandomTankerBehaviour is active:
+              Wait for the next tick (every 5 seconds).
+              Obtain the next message from the message queue.
+              Check the message content (Protocol must be "MoveTanker").
+              Ask an explorer or manager for the path to the node contained in the message.
+              Move towards the node following the obtained path.					
+        </script></code></pre>
+				</section>
+
+				<section data-auto-animate>
+					<h2 data-id="code-title">Agent Behaviours</h2>
+              <h3 style="color: #5697ac; font-size: 40px;">Coordinator</h3>
+					<pre data-id="code-animation"><code class="hljs javascript" data-trim data-line-numbers="7-13"><script type="text/template">
+            While ManagerBehaviour is active:
+              Wait for the next tick (every 10 seconds).
+              If the map representation is not initialized, retrieve the instance.
+              Get the list of unlocked treasures from the map.
+              For each unlocked treasure:
+                  If the list of unlocked treasures is not empty:
+                      Set the state of the treasure to COVERED.
+                      Create a Contract Net Protocol (CFP) message to send to potential responders (agents c1, c2, c3, c4).
+                      Set the protocol of the message as FIPA_CONTRACT_NET.
+                      Set the reply-by date for the message to 10 seconds from the current time.
+                      Set the content of the message as the string representation of the treasure.
+                      Add a ContractNetInitiator behavior to the agent to handle the contract net interaction.
+                      Update the state of the treasure to COVERED.
+              Print the states of all treasures in the map.
+					</script></code></pre>
+				</section>
+				</section>
+
+<section data-auto-animate>
+					<h2 data-id="code-title">Map Representation</h2>
+					<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers="|7,15|24,32|40-48"><script type="text/template">
+            /**
+             * Adds a new treasure with the specified ID, amount, and type to the treasure list.
+             * @param id     The unique identifier for the treasure.
+             * @param amount The amount of the treasure.
+             * @param type   The type of the treasure (e.g., "GOLD" or "DIAMOND").
+             */
+            public void addTreasure(int id, int amount, String type) {
+                // Implementation goes here
+            }
+
+            /**
+             * Unlocks a treasure with the specified ID.
+             * @param id The unique identifier of the treasure to unlock.
+             */
+            public void unlockTreasure(int id) {
+                // Implementation goes here
+            }
+
+            /**
+             * Checks if a treasure with the specified ID is unlocked.
+             * @param id The unique identifier of the treasure to check.
+             * @return True if the treasure is unlocked, false otherwise.
+             */
+            public boolean checkUnlocked(int id) {
+                // Implementation goes here
+            }
+
+            /**
+             * Updates the state of a treasure with the specified ID to "COLLECTED."
+             * @param id The unique identifier of the treasure to update.
+             */
+            public void updateTreasure(int id) {
+                // Implementation goes here
+            }
+
+            /**
+             * Returns a list of unlocked treasures.
+             * @return A list of unlocked treasures.
+             */
+            public List<Treasure> getUnlockedTreasures() {
+                // Implementation goes here
+            }
+
+            /**
+             * Returns a list of all treasures.
+             * @return A list of all treasures, including locked and unlocked ones.
+             */
+            public List<Treasure> getTreasures() {
+                // Implementation goes here
+            }
+
+					</script></code></pre>
+				</section>
+
+<!-- ------------- Slide 1 ------------------ -->
+      <section>
+      <section>
+        <div class="content">
+          <div class="left">
+            <h2>Results</h2>
+            <ul>
+          <li class="items" align="justify" style="color: #5697ac; font-weight: bold;">Metrics</li>
+              <ul>
+              <li class="fragment fade-up items" align="justify">Amount of gold obtained</li>
+              <li class="fragment fade-up items" align="justify">Amount of diamonds obtained</li>
+              <li class="fragment fade-up items" align="justify">Number of movements per agent</li>
+              </ul>
+            
+            <br>
+          <li class="items" align="justify" style="color: #5697ac; font-weight: bold;">Our experiments</li>
+              <ul>
+              <li class="fragment fade-up items" align="justify">Gathered the 100 gold and 100 diamond treasures</li>
+              <li class="fragment fade-up items" align="justify">Execution times: 2 min \(\pm\) 5 seg</li>
+              <li class="fragment fade-up items" align="justify">Number of movements per agent: \(\pm500\)</li>
+              <li class="fragment fade-up items" align="justify">Communication Range: 30 nodes</li>
+              </ul>
+            </ul>
+          </div>
+          <div class="right">
+            <img src="./assets/map_initial.png" alt="Italian Trulli">
+          </div>
+        </div>
+      </section>
+
+<section>
+        <div class="content">
+          <div class="left">
+            <h2>Results & Conclusion</h2>
+            <ul>
+              <li class="fragment fade-up items" align="justify">Multiple updates to the implementation idea on the fly</li>
+              <li class="fragment fade-up items" align="justify">Multiple intermediate versions that guide you to improve the implementation</li>
+              <li class="fragment fade-up items" align="justify">Theoretical and practival knowledge about MAS.
+              </li>
+              <li class="fragment fade-up items" align="justify">Evaluation of time and step requirements for task
+                completed sucessfully.</li>
+            </ul>
+          </div>
+          <div class="right">
+            <img src="./assets/Map_Final.png" alt="Italian Trulli">
+          </div>
+        </div>
+      </section>
       </section>
 
       <!-- ------------- Closing Slide ------------------ -->
