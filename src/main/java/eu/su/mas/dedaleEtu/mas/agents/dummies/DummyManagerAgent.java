@@ -6,6 +6,7 @@ import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
+import eu.su.mas.dedaleEtu.mas.behaviours.EndAllBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.ManagerBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.MessageManagingBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
@@ -57,7 +58,8 @@ public class DummyManagerAgent extends AbstractDedaleAgent{
 		 * 
 		 ************************************************/
 		lb.add(new ManagerBehaviour(this, myMap));
-		lb.add(new SemiRandomWalkBehaviour(this));
+		//lb.add(new EndAllBehaviour(this, myMap));
+		lb.add(new SemiRandomWalkBehaviour(this, myMap));
 		lb.add(new MessageManagingBehaviour(this, this.myMap));
 		
 		/***

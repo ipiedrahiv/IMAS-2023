@@ -14,11 +14,16 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
 import eu.su.mas.dedaleEtu.mas.behaviours.SemiRandomWalkBehaviour;
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.behaviours.Behaviour;
 import jade.core.AID;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
 
 
 /**
@@ -36,7 +41,7 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
 	 */
 	private static final long serialVersionUID = -1784844593772918359L;
 
-
+	private MapRepresentation myMap;
 
 	/**
 	 * This method is automatically called when "agent".start() is executed.
@@ -50,8 +55,8 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
 		super.setup();
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		lb.add(new RandomTankerBehaviour(this));
-		lb.add(new SemiRandomWalkBehaviour(this));
+		lb.add(new RandomTankerBehaviour(this, myMap));
+		lb.add(new SemiRandomWalkBehaviour(this, myMap));
 		
 		addBehaviour(new startMyBehaviours(this,lb));
 		
@@ -83,9 +88,20 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
+	private MapRepresentation myMap;
+
+	private boolean done = true;
+
+	private boolean reported = false;
+
+
+	public RandomTankerBehaviour (final AbstractDedaleAgent myagent, MapRepresentation myMap) {
+
 		super(myagent, 5000);
+		this.myMap = myMap;
 	}
+
+	public int intentionalMovement = 0;
 
 	@Override
 	public void onTick() {
@@ -146,6 +162,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 								}
 								if (nextNode != null) {
 									while(!((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)) {
+										intentionalMovement += 1;
 										this.myAgent.doWait(100);
 									}
 									this.myAgent.doWait(200);
@@ -156,6 +173,37 @@ class RandomTankerBehaviour extends TickerBehaviour{
 					}
 				}
 			}
+
+			if(this.myMap==null) {
+				this.myMap= MapRepresentation.getInstance();
+			}
+
+			done = true;
+
+			List<Treasure> allTreasures = this.myMap.getTreasures();
+
+			System.out.println("####################");
+			System.out.println(allTreasures.size());
+			System.out.println("####################");
+
+			if(allTreasures.size() == 10) {
+				for (Treasure treasure : allTreasures) {
+					done = done && ((treasure.getState() == State.COLLECTED));
+				}
+			} else {
+				done = false;
+			}
+
+			if(done == true) {
+				if (reported == false) {
+					System.out.println("####################");
+					System.out.println("TANKER-MOVE BEHAVIOUR");
+					System.out.println("Intentional movements for agent " + myAgent.getName() + " = " + intentionalMovement);
+					System.out.println("####################");
+					reported = true;
+				}
+			}
+
 		}
 	}
 }

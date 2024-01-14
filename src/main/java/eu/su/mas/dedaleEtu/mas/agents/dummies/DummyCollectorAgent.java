@@ -4,6 +4,7 @@ import eu.su.mas.dedale.env.Location;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.*;
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
 
 import java.io.IOException;
@@ -24,6 +25,10 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
 
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.State;
+import eu.su.mas.dedaleEtu.mas.knowledge.Treasure;
+
 /**
  * This dummy collector moves randomly, tries all its methods at each time step, store the treasure that match is treasureType 
  * in its backpack and intends to empty its backPack in the Tanker agent. @see {@link SemiRandomWalkExchangeBehaviour}
@@ -40,6 +45,9 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 	private boolean onMission = false;
 	private int countdown = 50;
 
+	private MapRepresentation myMap;
+
+
 
 
 	/**
@@ -54,7 +62,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		super.setup();
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		lb.add(new SemiRandomWalkExchangeBehaviour(this));
+		lb.add(new SemiRandomWalkExchangeBehaviour(this, myMap));
 
 		addBehaviour(new startMyBehaviours(this,lb));
 
@@ -231,13 +239,24 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		private static final long serialVersionUID = 9088209402507795289L;
 		private Location prevLoc = null;
 
-		public SemiRandomWalkExchangeBehaviour (final AbstractDedaleAgent myagent) {
+		private MapRepresentation myMap;
+
+		private int randomMovements = 0;
+
+		private boolean done = true;
+
+		private boolean reported = false;
+
+		public SemiRandomWalkExchangeBehaviour (final AbstractDedaleAgent myagent, MapRepresentation myMap) {
+
 			super(myagent, 200);
+			this.myMap = myMap;
 			//super(myagent);
 		}
 
 		@Override
 		public void onTick() {
+			randomMovements += 1;
 			//Example to retrieve the current position
 			Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
@@ -360,6 +379,33 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 					onMission = false;
 				}
 			}
+
+			if(this.myMap==null) {
+				this.myMap= MapRepresentation.getInstance();
+			}
+
+			done = true;
+
+			List<Treasure> allTreasures = this.myMap.getTreasures();
+
+			if(allTreasures.size() == 10) {
+				for (Treasure treasure : allTreasures) {
+					done = done && ((treasure.getState() == State.COLLECTED));
+				}
+			} else {
+				done = false;
+			}
+
+			if(done == true) {
+				if (reported == false) {
+					System.out.println("####################");
+					System.out.println("COLLECOR SEMIRANDOM-WALK BEHAVIOUR");
+					System.out.println("Random movements for agent " + myAgent.getName() + " = " + randomMovements);
+					System.out.println("####################");
+					reported = true;
+				}
+			}
+
 		}
 	}
 }

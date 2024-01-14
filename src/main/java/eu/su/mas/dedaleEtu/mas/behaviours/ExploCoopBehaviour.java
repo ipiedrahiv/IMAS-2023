@@ -60,6 +60,13 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	private List<String> list_agentNames;
 	private int count = 0;
 
+	public int move = 0;
+
+	private boolean done = true;
+
+	private boolean reported = false;
+
+
 /**
  * 
  * @param myagent reference to the agent we are adding this behaviour to
@@ -85,6 +92,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
 		if (myPosition!=null){
+			move += 1;
 			//List of observable from the agent's current position
 			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
 
@@ -136,6 +144,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 							try {
 								nextNodeId=this.myMap.getShortestPathToClosestOpenNode(myPosition.getLocationId()).get(0);
 								if(!((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId))) {
+									move += 1;
 									count += 3;
 								}
 							}catch(Exception e) {
@@ -148,6 +157,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}
 			}else {
 				if(!moveTowardsTreasure(myPosition)) {
+
 					moveRandom(myPosition);
 				}
 				unlockTreasure(myPosition, lobs);
@@ -159,6 +169,28 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			}
 			count -= 1;
 			prevLoc = myPosition;
+		}
+
+		done = true;
+
+		List<Treasure> allTreasures = this.myMap.getTreasures();
+
+		if(allTreasures.size() == 10) {
+			for (Treasure treasure : allTreasures) {
+				done = done && ((treasure.getState() == State.COLLECTED));
+			}
+		} else {
+			done = false;
+		}
+
+		if(done == true) {
+			if (reported == false) {
+				System.out.println("####################");
+				System.out.println("EXPLORER BEHAVIOUR");
+				System.out.println("Movements for agent " + myAgent.getName() + " = " + move);
+				System.out.println("####################");
+				reported = true;
+			}
 		}
 	}
 
@@ -211,7 +243,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 
 	private void moveRandom(Location myPosition) {
-
 		if (myPosition!=null && myPosition.getLocationId()!=""){
 			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
 
