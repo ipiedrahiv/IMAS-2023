@@ -20,5 +20,7 @@
 ## Configuration Files
 
 Agents Configuration: /resources/fullMapLeon-entities.json
+
 Environment Configuration (treasures configuration): /reasources/treasureHunt/mapLeon-elements
+
 Map DGS file: /resources/topology/Mini-Leon.dgs
