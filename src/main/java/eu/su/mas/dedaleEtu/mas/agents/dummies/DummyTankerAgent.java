@@ -182,7 +182,11 @@ class RandomTankerBehaviour extends TickerBehaviour{
 
 			List<Treasure> allTreasures = this.myMap.getTreasures();
 
-			if(allTreasures.size() == 1) {
+			System.out.println("####################");
+			System.out.println(allTreasures.size());
+			System.out.println("####################");
+
+			if(allTreasures.size() == 10) {
 				for (Treasure treasure : allTreasures) {
 					done = done && ((treasure.getState() == State.COLLECTED));
 				}

@@ -80,7 +80,7 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 
 		List<Treasure> allTreasures = this.myMap.getTreasures();
 
-		if(allTreasures.size() == 1) {
+		if(allTreasures.size() == 10) {
 			for (Treasure treasure : allTreasures) {
 				done = done && ((treasure.getState() == State.COLLECTED));
 			}
