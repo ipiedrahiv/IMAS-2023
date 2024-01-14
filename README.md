@@ -2,7 +2,7 @@
 
 ## Instructions
 
-1. Clone the repository:
+1. Clone the repository or unzip de zip file provided:
 
 `git clone https://github.com/ipiedrahiv/IMAS-2023.git`
 
