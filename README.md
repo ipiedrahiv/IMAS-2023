@@ -2,7 +2,7 @@
 
 ## Instructions
 
-1. Clone the repository:
+1. Clone the repository or unzip de zip file provided:
 
 `git clone https://github.com/ipiedrahiv/IMAS-2023.git`
 
@@ -14,7 +14,7 @@
 
 ![image](https://github.com/ipiedrahiv/IMAS-2023/assets/46933373/0009687e-659e-4ffb-acf0-1f35051210ce)
 
-4. Open the Principal.java file, and use the green arrow to automatically run maven install and exec, or use the 'run anything' option to run the following maven command: `mvn install exec:java`. The Dedale GUI should pop up, execution time will be around 6 minutes.
+4. Open the Principal.java file, and use the green arrow to automatically run maven install and exec, or use the 'run anything' option to run the following maven command: `mvn install exec:java`. The Dedale GUI should pop up, execution time will be around 2 minutes.
 
 
 ## Configuration Files
