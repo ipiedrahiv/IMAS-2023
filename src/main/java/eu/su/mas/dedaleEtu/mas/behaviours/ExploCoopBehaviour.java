@@ -60,6 +60,15 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	private List<String> list_agentNames;
 	private int count = 0;
 
+	public int randomMove = 0;
+
+	public int treasureMove = 0;
+
+	private boolean done = true;
+
+	private boolean reported = false;
+
+
 /**
  * 
  * @param myagent reference to the agent we are adding this behaviour to
@@ -120,6 +129,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			//3) while openNodes is not empty, continues.
 			if(!explored) {
 				if(count > 0) {
+					randomMove += 1;
 					moveRandom(myPosition);
 				}else {
 					if (!this.myMap.hasOpenNode()){
@@ -139,6 +149,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 									count += 3;
 								}
 							}catch(Exception e) {
+								randomMove += 1;
 								moveRandom(myPosition);
 							}
 						}else {
@@ -148,17 +159,43 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}
 			}else {
 				if(!moveTowardsTreasure(myPosition)) {
+					randomMove += 1;
 					moveRandom(myPosition);
 				}
+				treasureMove += 1;
 				unlockTreasure(myPosition, lobs);
 			}
 			if(prevLoc == myPosition) {
 				System.out.println(this.myAgent.getLocalName()+" - Stuck at "+myPosition.getLocationId()+", moving randomly");
 				count += 3;
+				randomMove += 1;
 				moveRandom(myPosition);
 			}
 			count -= 1;
 			prevLoc = myPosition;
+		}
+
+		done = true;
+
+		List<Treasure> allTreasures = this.myMap.getTreasures();
+
+		if(allTreasures.size() == 1) {
+			for (Treasure treasure : allTreasures) {
+				done = done && ((treasure.getState() == State.COLLECTED));
+			}
+		} else {
+			done = false;
+		}
+
+		if(done == true) {
+			if (reported == false) {
+				System.out.println("####################");
+				System.out.println("EXPLORER BEHAVIOUR");
+				System.out.println("Intentional movements for agent " + myAgent.getName() + " = " + treasureMove);
+				System.out.println("Random movements for agent " + myAgent.getName() + " = " + randomMove);
+				System.out.println("####################");
+				reported = true;
+			}
 		}
 	}
 
@@ -211,7 +248,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 
 	private void moveRandom(Location myPosition) {
-
 		if (myPosition!=null && myPosition.getLocationId()!=""){
 			List<Couple<Location,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
 
