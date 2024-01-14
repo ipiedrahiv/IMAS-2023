@@ -399,7 +399,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 			if(done == true) {
 				if (reported == false) {
 					System.out.println("####################");
-					System.out.println("COLLECOR SEMIRANDOM-WALK BEHAVIOUR");
+					System.out.println("COLLECTOR SEMIRANDOM-WALK BEHAVIOUR");
 					System.out.println("Random movements for agent " + myAgent.getName() + " = " + randomMovements);
 					System.out.println("####################");
 					reported = true;
