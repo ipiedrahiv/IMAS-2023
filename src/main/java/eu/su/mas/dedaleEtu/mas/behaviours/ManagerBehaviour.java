@@ -45,18 +45,21 @@ public class ManagerBehaviour extends TickerBehaviour{
 		if(this.myMap==null) {
 			this.myMap= MapRepresentation.getInstance();
 		}
+		
+		List<Treasure> allTreasures = this.myMap.getTreasures();
+
+		System.out.println(this.myAgent.getLocalName()+" - Current treasures: "+allTreasures);
 
 		List<Treasure> unlockedTreasures = this.myMap.getUnlockedTreasures();
-		boolean gold = false;
-		boolean diamond = false;
+		int countGold = 0;
+		int countDia = 0;
 		boolean proceed = true;
 
 		if (!unlockedTreasures.isEmpty()) {
 			for (Treasure treasure : unlockedTreasures) {
-				treasure.setState(State.COVERED);
-				if(treasure.getType() == Observation.GOLD && gold) {
+				if(treasure.getType() == Observation.GOLD && countGold >= 2) {
 					proceed = false;
-				}else if(treasure.getType() == Observation.DIAMOND && diamond) {
+				}else if(treasure.getType() == Observation.DIAMOND && countDia >= 2) {
 					proceed = false;
 				}
 
@@ -64,10 +67,10 @@ public class ManagerBehaviour extends TickerBehaviour{
 					String[] responders;
 					if (treasure.getType() == Observation.GOLD) {
 						responders = new String[]{"Collector 1", "Collector 2"};
-						gold = true;
+						countGold += 1;
 					} else {
 						responders = new String[]{"Collector 3", "Collector 4"};
-						diamond = true;
+						countDia += 1;
 					}
 				
 					// Fill the CFP message
@@ -76,13 +79,10 @@ public class ManagerBehaviour extends TickerBehaviour{
 						cfp.addReceiver(new AID(responders[i], AID.ISLOCALNAME));
 					}
 					cfp.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-					cfp.setReplyByDate(new Date(System.currentTimeMillis() + 8000));
+					cfp.setReplyByDate(new Date(System.currentTimeMillis() + 7500));
 					cfp.setContent(treasure.toString());
 
 					this.myAgent.addBehaviour(new DedaleContractNetInitiator(this.myAgent, cfp, this.myMap));
-				}
-				if(treasure.getState() == State.COVERED) {
-					treasure.setState(State.UNLOCKED);
 				}
 				proceed = true;
 			}

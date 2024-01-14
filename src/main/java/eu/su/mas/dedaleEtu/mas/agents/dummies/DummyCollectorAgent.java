@@ -82,7 +82,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 			@Override
 			protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
 				onMission = true;
-				System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getLocalName()+". Action is reach treasure: "+cfp.getContent());
+				System.out.println(getLocalName()+": CFP received from "+cfp.getSender().getLocalName()+". Action is reach treasure: "+cfp.getContent());
 
 				// Retrieve treasure from message
 				Treasure t = new Treasure(cfp.getContent());
@@ -110,24 +110,24 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 			@Override
 			protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
-				System.out.println("Agent "+getLocalName()+": Proposal accepted");
+				System.out.println(getLocalName()+": Proposal accepted");
 				// Perform the action (move to treasure)
 				if (performAction(Arrays.asList(propose.getContent().split(";")))) {
-					System.out.println("Agent "+getLocalName()+": Action successfully performed");
+					System.out.println(getLocalName()+": Action successfully performed");
 					ACLMessage inform = accept.createReply();
 					inform.setPerformative(ACLMessage.INFORM);
 					inform.setContent(cfp.getContent());
 					onMission = false;
 					return inform;
 				}else {
-					System.out.println("Agent "+getLocalName()+": Action execution failed");
+					System.out.println(getLocalName()+": Action execution failed");
 					onMission = false;
 					throw new FailureException(cfp.getContent());
 				}
 			}
 
 			protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
-				System.out.println("Agent "+getLocalName()+": Proposal rejected");
+				System.out.println(getLocalName()+": Proposal rejected");
 				onMission = false;
 			}
 		} );
@@ -147,13 +147,11 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				while(!((AbstractDedaleAgent)this).moveTo(nextNode)) {
 					doWait(100);
 				}
-				doWait(200);
+				doWait(100);
 			}else {
 				return false;
 			}
-			if(countdown == 0) {
-				onMission = false;
-				countdown = 50;
+			if(onMission == false) {
 				return false;
 			}
 		}
@@ -161,7 +159,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 	}
 
 	private List<String> evaluateAction(Treasure t) {
-		System.out.println(this.getLocalName()+" - Asking for path to treasure "+t.getId());
+		System.out.println(this.getLocalName()+" - Asking for path to treasure at "+t.getId());
 		ACLMessage msg=new ACLMessage(ACLMessage.REQUEST);
 
 		msg.setSender(this.getAID());
@@ -186,12 +184,12 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 			((AbstractDedaleAgent)this).sendMessage(msg);
 		}
 
-		System.out.println(this.getLocalName()+" - Waiting for path to treasure "+t.getId());
-		ACLMessage pathMsg = this.blockingReceive(MessageTemplate.MatchConversationId(conversationId));
+		// System.out.println(this.getLocalName()+" - Waiting for path to treasure "+t.getId());
+		ACLMessage pathMsg = this.blockingReceive(MessageTemplate.MatchConversationId(conversationId), 3000);
 		
-		System.out.println(this.getLocalName()+" - Received path to treasure "+t.getId());
+		// System.out.println(this.getLocalName()+" - Received path to treasure "+t.getId());
 		if(pathMsg == null){
-			System.out.println(this.getLocalName()+" - Path to treasure is null");
+			System.out.println(this.getLocalName()+" - No path received");
 		}else if(pathMsg.getProtocol().equals("PathToTreasure")) {
 			String path = pathMsg.getContent();
 			if(path != null) {
@@ -257,6 +255,12 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		@Override
 		public void onTick() {
 			randomMovements += 1;
+			countdown -= 1;
+			
+			if(countdown == 0) {
+				countdown = 50;
+				onMission = false;
+			}
 			//Example to retrieve the current position
 			Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
@@ -266,53 +270,72 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
 
 				//example related to the use of the backpack for the treasure hunt
-				Boolean b=false;
+				Boolean existsTreasure=false;
 				Boolean collected = true;
 				boolean grabbed = false;
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
-					case DIAMOND:case GOLD:
-						Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
-						if(success) {
+					case LOCKSTATUS:
+						if(o.getRight()==1) {
+							existsTreasure=true;
+						}
+						break;
+					default:
+						break;
+					}
+				}
+				if(existsTreasure) {
+					for(Couple<Observation,Integer> o:lObservations){
+						switch (o.getLeft()) {
+						case DIAMOND:case GOLD:
 							System.out.println(this.myAgent.getLocalName()+" - Opened lock at "+myPosition.getLocationId());
 							if(o.getLeft()==((AbstractDedaleAgent) this.myAgent).getMyTreasureType()) {
 								int amount = ((AbstractDedaleAgent) this.myAgent).pick();
 								if(amount > 0) {
 									System.out.println(this.myAgent.getLocalName()+" - Grabbed "+amount+" "+o.getLeft()+" from a total of "+o.getRight()+" at "+myPosition.getLocationId());
 									System.out.println(this.myAgent.getLocalName()+" - My current backpack free space is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-									b=true;
 									grabbed = true;
 									collected = false;
 
 									if(amount == o.getRight()) {
 										collected = true;
 										System.out.println(this.myAgent.getLocalName()+" - Treasure collected completely");
-										ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
-				
-										msg.setSender(this.myAgent.getAID());
-										msg.setProtocol("UpdateTreasure");
+										ACLMessage confirmation;
+										boolean confirmationSuccess = false;
+										while(!confirmationSuccess) {
+											confirmation = null;
+											// System.out.println(this.myAgent.getLocalName()+" - Waiting for confirmation of completeness");
+											while(confirmation == null) {
+												ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
+						
+												msg.setSender(this.myAgent.getAID());
+												msg.setProtocol("UpdateTreasure");
 
-										if (myPosition!=null && myPosition.getLocationId()!=""){
-											msg.setContent(myPosition.getLocationId());
+												if (myPosition!=null && myPosition.getLocationId()!=""){
+													msg.setContent(myPosition.getLocationId());
 
-											msg.addReceiver(new AID("Explorer 1",AID.ISLOCALNAME));
-											msg.addReceiver(new AID("Explorer 2",AID.ISLOCALNAME));
-											msg.addReceiver(new AID("Explorer 3",AID.ISLOCALNAME));
-											msg.addReceiver(new AID("Manager 1",AID.ISLOCALNAME));
-											// msg.addReceiver(new AID("m3",AID.ISLOCALNAME));
-											// msg.addReceiver(new AID("m4",AID.ISLOCALNAME));
-											// msg.addReceiver(new AID("m5",AID.ISLOCALNAME));									
+													msg.addReceiver(new AID("Explorer 1",AID.ISLOCALNAME));
+													msg.addReceiver(new AID("Explorer 2",AID.ISLOCALNAME));
+													msg.addReceiver(new AID("Explorer 3",AID.ISLOCALNAME));
+													msg.addReceiver(new AID("Manager 1",AID.ISLOCALNAME));							
 
-											((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+													((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+												}
+												confirmation = this.myAgent.blockingReceive(MessageTemplate.MatchProtocol("TreasureUpdated"), 2000);
+											}
+											if(confirmation.getContent().equals(myPosition.getLocationId())){
+												confirmationSuccess = true;
+											}
 										}
 									}
 								}
 							}	
-						}	
-						break;
-					default:
-						break;
+							break;
+						default:
+							break;
+						}
 					}
+						
 				}
 				
 				//Trying to store everything in the tanker
@@ -372,11 +395,6 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 					}while(lobs.get(moveId).getLeft().equals(prevLoc) && prevLoc != null);
 					prevLoc = myPosition;
 					((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
-				}
-				countdown -= 1;
-				if(countdown == 0) {
-					countdown = 50;
-					onMission = false;
 				}
 			}
 

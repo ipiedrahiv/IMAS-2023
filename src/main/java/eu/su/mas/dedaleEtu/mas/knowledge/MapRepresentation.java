@@ -104,6 +104,8 @@ public class MapRepresentation implements Serializable {
 	}
 
 	public synchronized boolean addTreasure(String id, int amount, Observation type) {
+		// System.out.println("Treasures: " + this.treasures);
+		// System.out.println("Trying to add treasure " + id + " " + amount + " " + type);
 		if (!treasureContained(this.treasures, id)) {
 			this.treasures.add(new Treasure(id, amount, State.LOCKED, type));
 			return true;
@@ -138,7 +140,7 @@ public class MapRepresentation implements Serializable {
 		}
 	}
 
-	public List<Treasure> getUnlockedTreasures() {
+	public synchronized List<Treasure> getUnlockedTreasures() {
 		List<Treasure> unlockedTreasures = new ArrayList<Treasure>();
 		for (Treasure t : this.treasures) {
 			if (t.getState() == State.UNLOCKED) {

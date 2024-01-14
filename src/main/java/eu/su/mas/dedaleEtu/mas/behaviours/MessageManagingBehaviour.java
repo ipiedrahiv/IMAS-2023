@@ -29,7 +29,7 @@ public class MessageManagingBehaviour extends TickerBehaviour{
 	 *  
 	 */
 	public MessageManagingBehaviour (final Agent myagent, MapRepresentation myMap) {
-		super(myagent, 3000);
+		super(myagent, 200);
 		this.myMap=myMap;
 	}
 
@@ -47,6 +47,13 @@ public class MessageManagingBehaviour extends TickerBehaviour{
                 // Update the treasure state to unlocked
                 String treasureId = msg.getContent();
                 this.myMap.updateTreasure(treasureId);
+
+                ACLMessage confirmation = new ACLMessage(ACLMessage.INFORM);
+                confirmation.setSender(this.myAgent.getAID());
+                confirmation.setProtocol("TreasureUpdated");
+                confirmation.setContent(treasureId);
+                confirmation.addReceiver(new AID(msg.getSender().getLocalName(), AID.ISLOCALNAME));
+                ((AbstractDedaleAgent)this.myAgent).sendMessage(confirmation);
 
             }else if(msg.getProtocol().equals("GetPathToTreasure")) {
                 String content = msg.getContent();

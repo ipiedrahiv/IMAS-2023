@@ -157,10 +157,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}
 			}else {
 				if(!moveTowardsTreasure(myPosition)) {
-
 					moveRandom(myPosition);
 				}
-				unlockTreasure(myPosition, lobs);
 			}
 			if(prevLoc == myPosition) {
 				System.out.println(this.myAgent.getLocalName()+" - Stuck at "+myPosition.getLocationId()+", moving randomly");
@@ -196,27 +194,27 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	public void unlockTreasure(Location myPosition, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs) {
 		List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
-			for(Couple<Observation,Integer> o:lObservations){
-				switch (o.getLeft()) {
-				case DIAMOND:case GOLD:
-					Boolean added = this.myMap.addTreasure(myPosition.getLocationId(), o.getRight(), o.getLeft());
-					if(added) {
-						System.out.println(this.myAgent.getLocalName()+" - New treasure ("+ o.getLeft()+" - "+o.getRight()+") found at "+myPosition.getLocationId());
-					}
-					if(!this.myMap.checkUnlocked(myPosition.getLocationId())) {
-						Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
-						if(success) {
-							this.myMap.unlockTreasure(myPosition.getLocationId());
-							System.out.println(this.myAgent.getLocalName()+" - Opened lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
-						}else{
-							System.out.println(this.myAgent.getLocalName()+" - Failed to open lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
-						}
-					}
-					break;
-				default:
-					break;
+		for(Couple<Observation,Integer> o:lObservations){
+			switch (o.getLeft()) {
+			case DIAMOND:case GOLD:
+				Boolean added = this.myMap.addTreasure(myPosition.getLocationId(), o.getRight(), o.getLeft());
+				if(added) {
+					System.out.println(this.myAgent.getLocalName()+" - New treasure ("+ o.getLeft()+" - "+o.getRight()+") found at "+myPosition.getLocationId());
 				}
+				if(!this.myMap.checkUnlocked(myPosition.getLocationId())) {
+					Boolean success = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
+					if(success) {
+						this.myMap.unlockTreasure(myPosition.getLocationId());
+						System.out.println(this.myAgent.getLocalName()+" - Opened lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
+					}else{
+						System.out.println(this.myAgent.getLocalName()+" - Failed to open lock ("+ o.getLeft()+" - "+o.getRight()+") at "+myPosition.getLocationId());
+					}
+				}
+				break;
+			default:
+				break;
 			}
+		}
 	}
 
 	public boolean moveTowardsTreasure(Location myPosition) {

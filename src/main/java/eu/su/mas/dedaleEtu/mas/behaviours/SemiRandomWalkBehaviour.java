@@ -44,6 +44,13 @@ public class SemiRandomWalkBehaviour extends TickerBehaviour{
 		this.myMap = myMap;
 		//super(myagent);
 	}
+	
+	
+	public SemiRandomWalkBehaviour (final AbstractDedaleAgent myagent, MapRepresentation myMap, int tickRate) {
+		super(myagent, tickRate);
+		this.myMap = myMap;
+		//super(myagent);
+	}
 
 	@Override
 	public void onTick() {
